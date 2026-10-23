@@ -3,80 +3,20 @@
   z-index: 3;
   height: 52px;
   margin-bottom: -52px;
-  /* the slices overhang the right edge by a hair; clip sideways only, so the
-     peeled strip can still fall down past the seal */
+  /* keep the strip from widening the page while it slides away */
   overflow-x: clip;
 }
 
 .strip {
-  display: flex;
-  height: 52px;
-  perspective: 900px;
-}
-
-.slice {
   position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  /* a hair of overlap hides seams between slices */
-  margin-right: -0.5px;
-  overflow: hidden;
-  transform-origin: 50% 0;
+  height: 52px;
 }
 
-/* Each slice shows its own part of one full-width strip */
-.window {
-  width: calc(100% * var(--slices));
-  margin-left: calc(-100% * var(--i));
-}
-
-/* Shading as the foil turns away. Fading a dark overlay is cheap for the GPU,
-   unlike animating a brightness filter on every slice. */
-.slice::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--ink);
-  opacity: 0;
-}
-
-/* Only animate transform and opacity, which the GPU handles without repainting.
-   The slices are spread over ~0.8s so the curl travels left to right. */
-.open .slice {
-  will-change: transform, opacity;
-  animation: peel 0.95s cubic-bezier(0.4, 0, 0.6, 1) forwards;
-  animation-delay: calc(var(--i) * 23ms);
-}
-
-.open .slice::after {
-  animation: shade 0.95s cubic-bezier(0.4, 0, 0.6, 1) forwards;
-  animation-delay: calc(var(--i) * 23ms);
-}
-
-@keyframes peel {
-  0% {
-    transform: none;
-  }
-  30% {
-    transform: rotateX(-70deg);
-  }
-  60% {
-    transform: translate(12px, 70px) rotateX(-115deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(40px, 300px) rotateX(-160deg);
-    opacity: 0;
-  }
-}
-
-@keyframes shade {
-  30% {
-    opacity: 0.18;
-  }
-  100% {
-    opacity: 0.4;
-  }
+/* Slide the whole strip off to the left. Only transform changes, which the
+   GPU moves without repainting anything. */
+.open .strip {
+  transform: translateX(-100%);
+  transition: transform 0.9s cubic-bezier(0.55, 0, 0.2, 1);
 }
 
 .label {
@@ -95,12 +35,4 @@
   font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-.open .label {
-  opacity: 0;
-  transform: translateY(-10px);
 }

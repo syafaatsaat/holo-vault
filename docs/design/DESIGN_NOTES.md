@@ -64,7 +64,7 @@ The file is `mockups/OptionC-Stickers.dc.html`, with parts taken from Options A 
    - **Right:** the Umbreon ex card (tilted) with a yellow "Top pull $1,215.47" sticker and a blue "Umbreon ex · 161/131" tag.
 4. **Pack seal and tear**
    - The bottom of the red hero has a dashed tear line and a crimped seal strip labelled "Tear here".
-   - When the seal scrolls into view, it peels away like bending foil: the strip is built from 36 thin slices that each curl forward a moment after their left neighbour, so one continuous strip curls from left to right, darkens as it turns, and falls.
+   - When the seal scrolls into view, the whole crimped strip slides off to the left until it leaves the screen.
    - "Top cards in the vault" then slides out from behind the pack with a bounce, and the cards drop in one by one.
    - The animation plays once in the real app (the mockup replays it for testing).
    - With reduced motion turned on, everything simply appears.
