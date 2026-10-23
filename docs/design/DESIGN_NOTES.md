@@ -54,7 +54,7 @@ A shopping app for The Odin Project brief: Home, Shop and Cart pages, a navbar o
 The file is `mockups/OptionC-Stickers.dc.html`, with parts taken from Options A and B.
 
 1. **Navbar**
-   - The logo is a yellow booster pack with crimped edges, a torn top-right corner (silver foil showing) and a Poké Ball emblem. There's no text, and the logo will be revisited later.
+   - The logo is the booster pack outline (crimped edges, torn top-right corner) filled like a Poké Ball: red top, white bottom, dark middle band and centre button, cut to the pack shape. There's no text. The browser-tab icon matches.
    - Shop, About and Visit Us sit in the centre; Cart (with a count badge) is on the right.
    - At the top of the page it blends into the red hero with no dividing line.
    - After scrolling, it shrinks into a smaller floating bar: translucent white with a blur, a translucent rounded border, and it stays pinned at the top.
