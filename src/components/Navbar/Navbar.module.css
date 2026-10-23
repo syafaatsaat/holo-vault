@@ -38,7 +38,7 @@
 
 .compact .nav {
   max-width: 920px;
-  padding: 6px 10px 6px 12px;
+  padding: 8px 14px;
   border-color: rgb(29 33 64 / 0.18);
   background-color: rgb(255 255 255 / 0.72);
   /* a smaller blur radius is much cheaper to redraw while content scrolls under it */
@@ -57,8 +57,7 @@
     /* room on both sides of the links, between the logo and the Cart button */
     column-gap: 56px;
     width: fit-content;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 10px 22px;
   }
 
   /* Three equal-width links, so the middle one (About) sits at the bar's centre */
