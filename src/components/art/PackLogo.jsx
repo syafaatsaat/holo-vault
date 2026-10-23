@@ -18,6 +18,14 @@ export default function PackLogo({ className, strokeWidth = 5 }) {
           <polygon points={PACK_OUTLINE} />
         </clipPath>
       </defs>
+      {/* Thin white rim outside the outline, so the red top stands out on the red navbar */}
+      <polygon
+        points={PACK_OUTLINE}
+        fill="none"
+        stroke="var(--white)"
+        strokeWidth={strokeWidth * 2.4}
+        strokeLinejoin="round"
+      />
       <g clipPath={`url(#${clipId})`}>
         <rect x="0" y="0" width="80" height="50" fill="var(--red)" />
         <rect x="0" y="50" width="80" height="50" fill="var(--white)" />
