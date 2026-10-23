@@ -1,0 +1,28 @@
+/* 36px ridged band + 16px of teeth = 52px. The edge overlaps the next (or
+   previous) section by its full height so the teeth sit over that section. */
+.edge {
+  position: relative;
+  z-index: 3;
+  height: 52px;
+}
+
+.down {
+  margin-bottom: -52px;
+}
+
+.up {
+  margin-top: -16px;
+  height: auto;
+}
+
+.band {
+  height: 36px;
+  background-color: var(--red-crimp);
+  background-image: repeating-linear-gradient(90deg, rgb(29 33 64 / 0.2) 0 2px, transparent 2px 9px);
+}
+
+.teeth {
+  width: 100%;
+  height: 16px;
+  fill: var(--red-crimp);
+}

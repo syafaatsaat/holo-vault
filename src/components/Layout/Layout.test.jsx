@@ -14,8 +14,8 @@ afterEach(() => {
 describe('pages', () => {
   it.each([
     ['/', 'Welcome to Holo Vault', 'Holo Vault · Pokémon TCG singles at market price'],
-    ['/shop', 'Shop the vault', 'Shop · Holo Vault'],
-    ['/cart', 'Your cart', 'Cart · Holo Vault'],
+    ['/shop', 'Shop the vault.', 'Shop · Holo Vault'],
+    ['/cart', 'Your cart.', 'Cart · Holo Vault'],
   ])('%s shows its page with the shared navbar, Visit Us and footer', (path, heading, title) => {
     renderRoute(path)
     expect(screen.getByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
@@ -27,7 +27,7 @@ describe('pages', () => {
 
   it('shows a not-found page with a way back for an unknown address', () => {
     renderRoute('/pokedex')
-    expect(screen.getByRole('heading', { level: 1, name: 'This page got away' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'This page got away.' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Browse the shop' })).toHaveAttribute('href', '/shop')
     expect(mainNav()).toBeInTheDocument()
   })
@@ -87,7 +87,7 @@ describe('scrolling', () => {
     renderRoute('/')
     scrollTo.mockClear()
     await user.click(within(mainNav()).getByRole('link', { name: 'Shop' }))
-    expect(screen.getByRole('heading', { level: 1, name: 'Shop the vault' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Shop the vault.' })).toBeInTheDocument()
     expect(scrollTo).toHaveBeenCalledWith({ top: 0, left: 0 })
   })
 })

@@ -108,6 +108,18 @@ p {
   background-size: 26px 26px;
 }
 
+/* Page content under a PageBand: clears the crimped seal's teeth */
+.page-content {
+  position: relative;
+  z-index: 1;
+  padding: 104px var(--gutter) 40px;
+}
+
+.page-content > * {
+  max-width: var(--page-max);
+  margin-inline: auto;
+}
+
 /* Hidden visually, still read by screen readers */
 .visually-hidden {
   position: absolute;

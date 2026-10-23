@@ -7,17 +7,17 @@ import styles from './Layout.module.css'
 
 export default function Layout() {
   return (
-    <>
+    <div className={styles.app}>
       <ScrollManager />
       <a className={styles.skipLink} href="#main">
         Skip to content
       </a>
       <Navbar />
-      <main id="main" tabIndex={-1} className={styles.main}>
+      <main id="main" tabIndex={-1} className={`dotted ${styles.main}`}>
         <Outlet />
       </main>
       <VisitUs />
       <Footer />
-    </>
+    </div>
   )
 }

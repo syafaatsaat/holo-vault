@@ -1,0 +1,87 @@
+.band {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  background: var(--red);
+  color: var(--white);
+}
+
+/* Dashed tear line just above the crimped seal */
+.band::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 10px;
+  border-top: 3px dashed rgb(255 255 255 / 0.55);
+}
+
+.ball {
+  position: absolute;
+  color: var(--white);
+  opacity: 0.14;
+  animation: spin 60s linear infinite;
+}
+
+.ballLeft {
+  width: 360px;
+  height: 360px;
+  left: -120px;
+  bottom: -200px;
+}
+
+.ballRight {
+  width: 200px;
+  height: 200px;
+  right: 6%;
+  top: -50px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  /* room for the fixed navbar above */
+  padding: 132px var(--gutter) 72px;
+}
+
+/* The navbar wraps onto two rows on phones */
+@media (max-width: 640px) {
+  .content {
+    padding-top: 168px;
+  }
+}
+
+.eyebrow {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--red-dark);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(44px, 6vw, 72px);
+  line-height: 1;
+}
+
+.highlight {
+  color: var(--yellow);
+}
+
+.description {
+  max-width: 560px;
+  font-size: 18px;
+  color: var(--text-on-red);
+}

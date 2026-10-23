@@ -1,0 +1,38 @@
+.badge {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-pill);
+  background: var(--tint-grey);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.special {
+  background: var(--yellow);
+}
+
+.hyper {
+  background: var(--ink);
+  color: var(--yellow);
+}
+
+.illustration {
+  background: var(--tint-blue);
+  color: var(--blue-dark);
+}
+
+.ultra {
+  background: var(--white);
+}
+
+.double {
+  background: var(--tint-red);
+  color: var(--red-dark);
+}
+
+.aceSpec {
+  background: var(--tint-yellow);
+}

@@ -1,3 +1,14 @@
+/* Short pages still fill the window, so the footer never floats mid-screen */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+}
+
 .main:focus {
   outline: none;
 }
