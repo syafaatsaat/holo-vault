@@ -59,7 +59,9 @@
   }
 }
 
+/* Wide screens: logo | links | Cart, whatever their order in the page */
 .logo {
+  grid-column: 1;
   justify-self: start;
   border-radius: 8px;
 }
@@ -91,6 +93,7 @@
 }
 
 .links {
+  grid-column: 2;
   display: flex;
   justify-content: center;
   gap: 6px;
@@ -134,15 +137,9 @@
   transform: rotate(-2deg);
 }
 
-/* Cart, plus the burger on phones */
-.actions {
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .cart {
+  grid-column: 3;
+  justify-self: end;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -211,23 +208,34 @@
   background: var(--yellow);
 }
 
-/* Phones: one row (logo | Cart + burger), with the page links in a drop-down
-   sticker panel under the bar */
+/* Phones: logo, burger and Cart snug together in the middle of one row, with
+   the page links in a drop-down sticker panel centred under the bar */
 @media (max-width: 640px) {
   .nav {
     position: relative;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    column-gap: 12px;
+    width: fit-content;
   }
 
   .burger {
+    grid-column: 2;
     display: flex;
   }
 
+  .cart {
+    justify-self: start;
+  }
+
   .links {
+    /* out of the grid, so it's placed against the whole bar, not a column */
+    grid-column: auto;
     position: absolute;
     top: calc(100% + 10px);
-    left: 12px;
-    right: 12px;
+    left: 50%;
+    width: min(calc(100vw - 32px), 340px);
+    transform: translateX(-50%);
     display: none;
     flex-direction: column;
     gap: 6px;
