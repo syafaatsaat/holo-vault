@@ -1,0 +1,314 @@
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.list {
+  flex: 999 1 600px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* One cart row: card image, details, and price + controls on the right */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 28px;
+  padding: 20px 24px;
+  border: var(--outline);
+  border-radius: var(--radius-card);
+  background: var(--white);
+  box-shadow: 0 5px 0 var(--ink);
+}
+
+.image {
+  flex: none;
+  width: 128px;
+  height: auto;
+  aspect-ratio: 287 / 400;
+  object-fit: cover;
+  border: var(--outline);
+  border-radius: 14px;
+  background: var(--tint-grey);
+}
+
+.details {
+  flex: 1 1 200px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  margin-top: 6px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.meta {
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.controls {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.lineTotal {
+  color: var(--red);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.stepper {
+  width: 190px;
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 18px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--ink);
+  transition: background-color 0.15s ease;
+}
+
+.remove:hover {
+  background: var(--tint-yellow);
+}
+
+/* Summary: a small Poké Ball panel that stays in view on wide screens */
+.summary {
+  flex: 1 1 320px;
+  position: sticky;
+  top: var(--nav-offset);
+  overflow: hidden;
+  border: var(--outline);
+  border-radius: 28px;
+  background: var(--white);
+  box-shadow: 0 6px 0 var(--ink);
+}
+
+.summaryTop {
+  padding: 20px 24px 34px;
+  background: var(--red);
+  color: var(--white);
+}
+
+.summaryTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 30px;
+}
+
+.summaryBand {
+  position: relative;
+  height: 12px;
+  background: var(--ink);
+}
+
+.summaryBand span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56px;
+  height: 56px;
+  border: 8px solid var(--ink);
+  border-radius: 50%;
+  background: var(--white);
+  transform: translate(-50%, -50%);
+}
+
+.summaryBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 40px 24px 0;
+}
+
+.summaryLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.summaryLine dd {
+  margin: 0;
+}
+
+.subtotal {
+  padding-top: 14px;
+  border-top: 3px dashed var(--line);
+  font-weight: 800;
+}
+
+.subtotal dd {
+  color: var(--red);
+  font-family: var(--font-heading);
+  font-size: 36px;
+}
+
+.summaryFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 24px 24px;
+}
+
+.note {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  padding: 0 28px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 19px;
+  text-decoration: none;
+  box-shadow: var(--sticker-shadow);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 var(--ink);
+}
+
+.primaryButton,
+.primaryButton:hover {
+  background: var(--red);
+  color: var(--white);
+}
+
+.secondaryButton,
+.secondaryButton:hover {
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* Empty cart */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 40px 28px;
+  border: var(--outline);
+  border-radius: 28px;
+  background: var(--white);
+  text-align: center;
+  box-shadow: 0 6px 0 var(--ink);
+}
+
+.emptyPack {
+  width: 104px;
+  height: 130px;
+  transform: rotate(-6deg);
+}
+
+.emptyTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 32px;
+}
+
+.emptyText {
+  color: var(--text-soft);
+  font-size: 17px;
+}
+
+/* On narrow screens the summary sits under the list and doesn't need to stick */
+@media (max-width: 960px) {
+  .summary {
+    position: static;
+  }
+}
+
+/* Phones: smaller image beside the details, controls in a row underneath */
+@media (max-width: 640px) {
+  .row {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .image {
+    width: 88px;
+  }
+
+  .details {
+    flex-basis: 140px;
+  }
+
+  .name {
+    font-size: 21px;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'total total'
+      'stepper remove';
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .lineTotal {
+    grid-area: total;
+    justify-self: end;
+  }
+
+  .stepper {
+    grid-area: stepper;
+    width: auto;
+  }
+
+  .remove {
+    grid-area: remove;
+  }
+}
