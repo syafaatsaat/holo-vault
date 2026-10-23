@@ -11,7 +11,7 @@ How the app will be built from the designs in [`design/DESIGN_NOTES.md`](design/
 | Saving the cart | Store it in `localStorage`, so it survives a page refresh |
 | Shop filters | Saved in the URL (`/shop?set=151&q=chari&sort=price-asc`), so they can be linked to and survive the back button |
 | Styling | CSS Modules, with global colour tokens as CSS variables in `src/index.css` |
-| Routing | `react-router` v7 |
+| Routing | `react-router` v8 |
 | Testing | Vitest + React Testing Library + user-event + jest-dom, running in jsdom. React Router itself is not tested. |
 | Hosting | Vercel, with the SPA rewrite in `vercel.json` |
 
