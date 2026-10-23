@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Holo Vault, Option A: Poké Ball Split</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#2A6FDB}a:hover{color:#1F56AD}
+button{font:inherit}
+button:focus-visible{outline:3px solid #2A6FDB;outline-offset:2px}
+.a-lift{transition:transform .2s ease,box-shadow .2s ease}
+.a-lift:hover{transform:translateY(-4px) rotate(-1deg);box-shadow:0 8px 0 #1D2140}
+.a-nav:hover{background:rgba(255,255,255,.16)}
+.a-spin{animation:a-spin 40s linear infinite}
+@keyframes a-spin{to{transform:rotate(360deg)}}
+.a-navgrid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px 12px}
+@media (max-width:640px){.a-navgrid{grid-template-columns:1fr auto;grid-template-areas:"logo cart" "links links"}.a-logo{grid-area:logo}.a-cart{grid-area:cart}.a-links{grid-area:links}}
+@media (prefers-reduced-motion:reduce){.a-spin{animation:none}.a-lift:hover{transform:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FFFFFF; color: #1D2140; font-family: 'Nunito Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.5; overflow-x: hidden">
+
+  <!-- NAVBAR -->
+  <header style="background: #E0262B">
+    <nav aria-label="Main" class="a-navgrid" style="max-width: 1200px; margin: 0 auto; padding: 14px clamp(16px, 4vw, 24px)">
+      <button type="button" class="a-logo" style="justify-self: start; display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; color: #FFFFFF; cursor: pointer">
+        <svg width="38" height="38" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle><path d="M5 50a45 45 0 0 1 90 0Z" fill="#FFCB05" stroke="#1D2140" style="stroke-width: 7"></path><path d="M5 50h90" stroke="#1D2140" style="stroke-width: 7"></path><circle cx="50" cy="50" r="14" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle></svg>
+        <span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 26px">Holo Vault</span>
+      </button>
+      <div class="a-links" style="display: flex; justify-content: center; gap: 4px">
+        <button type="button" class="a-nav" style="height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: none; color: #FFFFFF; font-weight: 700; cursor: pointer">Shop</button>
+        <button type="button" class="a-nav" style="height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: none; color: #FFFFFF; font-weight: 700; cursor: pointer">About</button>
+        <button type="button" class="a-nav" style="height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: none; color: #FFFFFF; font-weight: 700; cursor: pointer">Visit Us</button>
+      </div>
+      <div class="a-cart" style="justify-self: end">
+        <button type="button" aria-label="Cart, 3 items" style="height: 46px; padding: 0 8px 0 18px; border: 3px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 10px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><circle cx="9" cy="20" r="1.5"></circle><circle cx="18" cy="20" r="1.5"></circle><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21.5 7H6"></path></svg>
+          Cart
+          <span style="width: 28px; height: 28px; border-radius: 50%; background: #FFCB05; border: 2px solid #1D2140; display: inline-flex; align-items: center; justify-content: center; font-family: Fredoka, sans-serif; font-size: 14px">3</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO: the top half of a Poké Ball -->
+  <section style="position: relative; background: #E0262B; color: #FFFFFF; overflow: hidden">
+    <sc-for list="{{heroBalls}}" as="b" hint-placeholder-count="3">
+      <svg viewBox="0 0 100 100" aria-hidden="true" class="a-spin" style="{{b.style}}"><circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" style="stroke-width: 3"></circle><path d="M4 50h33M63 50h33" stroke="#FFFFFF" style="stroke-width: 3"></path><circle cx="50" cy="50" r="13" fill="none" stroke="#FFFFFF" style="stroke-width: 3"></circle></svg>
+    </sc-for>
+    <div style="position: relative; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 56px clamp(16px, 4vw, 24px) 170px; display: flex; flex-wrap: wrap; align-items: center; gap: 40px">
+      <div style="flex: 999 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+        <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; color: #B81D22; font-weight: 700; font-size: 14px">Pokémon TCG singles at market price</span>
+        <h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: clamp(44px, 6vw, 76px); line-height: 1">Catch the cards<br>you <span style="color: #FFCB05">chased.</span></h1>
+        <p style="margin: 0; max-width: 500px; font-size: 18px; color: #FFE9EA">276 Double Rare and higher singles from 151, Prismatic Evolutions, Surging Sparks and Obsidian Flames.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px">
+          <button type="button" class="a-lift" style="height: 54px; padding: 0 28px; border: 3px solid #1D2140; border-radius: 999px; background: #FFCB05; color: #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 19px; cursor: pointer; box-shadow: 0 4px 0 #1D2140">Start shopping</button>
+          <button type="button" class="a-lift" style="height: 54px; padding: 0 26px; border: 3px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 19px; cursor: pointer; box-shadow: 0 4px 0 #1D2140">See top cards</button>
+        </div>
+      </div>
+      <div style="flex: 1 1 380px; min-width: 0; height: 300px; box-sizing: border-box; border: 3px dashed rgba(255,255,255,0.7); border-radius: 28px; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; font-weight: 700; color: #FFFFFF; background: rgba(255,255,255,0.08)">Hero art placeholder<br>(e.g. trainer or Rustboro City illustration)</div>
+    </div>
+  </section>
+
+  <!-- The Poké Ball band with the centre button holding the featured card -->
+  <div style="position: relative; height: 22px; background: #1D2140">
+    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 280px; height: 280px; border-radius: 50%; background: #FFFFFF; border: 16px solid #1D2140; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+      <div style="width: 210px; height: 210px; border-radius: 50%; border: 4px solid #E1E4EE; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+        <img src="/_blob/aae45c049f680d3051fa7d38ba7c9848" alt="Umbreon ex, Prismatic Evolutions Special Illustration Rare" style="width: 118px; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 8px; border: 3px solid #1D2140; transform: rotate(-6deg)">
+      </div>
+      <div style="position: absolute; right: -150px; top: 54px; transform: rotate(7deg); padding: 10px 16px; border-radius: 16px; background: #FFCB05; border: 3px solid #1D2140; box-shadow: 4px 4px 0 #1D2140; text-align: center">
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em">Top pull</div>
+        <div style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 24px; line-height: 1.1">$1,215.47</div>
+      </div>
+      <div style="position: absolute; left: -170px; bottom: 40px; transform: rotate(-5deg); padding: 8px 14px; border-radius: 12px; background: #2A6FDB; color: #FFFFFF; border: 3px solid #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; white-space: nowrap">Umbreon ex · 161/131</div>
+    </div>
+  </div>
+
+  <div style="max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 170px clamp(16px, 4vw, 24px) 0; display: flex; flex-direction: column; gap: 88px">
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+      <span style="padding: 10px 18px; border-radius: 999px; border: 3px solid #1D2140; background: #FFF6D1; font-weight: 700"><span style="font-family: Fredoka, sans-serif; font-size: 18px">276</span> cards</span>
+      <span style="padding: 10px 18px; border-radius: 999px; border: 3px solid #1D2140; background: #FDE9EA; font-weight: 700"><span style="font-family: Fredoka, sans-serif; font-size: 18px">4</span> sets</span>
+      <span style="padding: 10px 18px; border-radius: 999px; border: 3px solid #1D2140; background: #EAF1FD; font-weight: 700">Prices as of <span style="font-family: Fredoka, sans-serif; font-size: 18px">22 Oct 2026</span></span>
+    </div>
+
+    <!-- CARD PREVIEW -->
+    <section style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+        <div style="display: flex; align-items: center; gap: 14px">
+          <svg width="44" height="44" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle><path d="M5 50a45 45 0 0 1 90 0Z" fill="#E0262B" stroke="#1D2140" style="stroke-width: 7"></path><path d="M5 50h90" stroke="#1D2140" style="stroke-width: 7"></path><circle cx="50" cy="50" r="14" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle></svg>
+          <div>
+            <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 38px; line-height: 1.1">Top cards in the vault</h2>
+            <p style="margin: 0; color: #4B5070">The most valuable pulls we stock right now.</p>
+          </div>
+        </div>
+        <button type="button" class="a-lift" style="height: 48px; padding: 0 22px; border: 3px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-weight: 700; cursor: pointer; box-shadow: 0 4px 0 #1D2140">See all 276 cards</button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px">
+        <sc-for list="{{cards}}" as="c" hint-placeholder-count="4">
+          <article class="a-lift" style="position: relative; border: 3px solid #1D2140; border-radius: 26px; background: #FFFFFF; overflow: hidden; box-shadow: 0 4px 0 #1D2140">
+            <div style="{{c.topStyle}}">
+              <svg viewBox="0 0 100 100" aria-hidden="true" style="position: absolute; width: 230px; height: 230px; left: 50%; top: 50%; transform: translate(-50%, -50%); opacity: 0.35"><circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" style="stroke-width: 4"></circle><path d="M4 50h33M63 50h33" stroke="#FFFFFF" style="stroke-width: 4"></path><circle cx="50" cy="50" r="13" fill="none" stroke="#FFFFFF" style="stroke-width: 4"></circle></svg>
+              <img src="{{c.img}}" alt="{{c.alt}}" style="{{c.imgStyle}}">
+            </div>
+            <div style="height: 8px; background: #1D2140"></div>
+            <div style="padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 2px">
+              <span style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">{{c.name}}</span>
+              <span style="font-size: 14px; color: #5B6080">{{c.setName}}</span>
+            </div>
+            <div style="position: absolute; right: 12px; top: 12px; transform: rotate(8deg); padding: 6px 12px; border-radius: 999px; background: #FFCB05; border: 3px solid #1D2140; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 17px">{{c.price}}</div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- divider motif -->
+    <div aria-hidden="true" style="position: relative; height: 6px; border-radius: 3px; background: #1D2140">
+      <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; background: #FFFFFF; border: 6px solid #1D2140; box-sizing: border-box"></span>
+    </div>
+
+    <!-- ABOUT -->
+    <section style="position: relative; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+      <svg viewBox="0 0 100 100" aria-hidden="true" style="position: absolute; right: -180px; top: -40px; width: 560px; height: 560px; opacity: 0.6"><circle cx="50" cy="50" r="47" fill="none" stroke="#F1F3FA" style="stroke-width: 3"></circle><path d="M3 50h34M63 50h34" stroke="#F1F3FA" style="stroke-width: 3"></path><circle cx="50" cy="50" r="13" fill="none" stroke="#F1F3FA" style="stroke-width: 3"></circle></svg>
+      <div style="position: relative; flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+        <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FDE9EA; color: #B81D22; font-weight: 700; font-size: 14px">About</span>
+        <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 44px; line-height: 1.05">A card shop built for collectors</h2>
+        <p style="margin: 0; color: #4B5070; font-size: 18px">Holo Vault sells single cards, so you can skip the packs and go straight for the one you want. Every card is priced from TCGplayer market data, so you always know you are paying what the card is worth.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px">
+          <sc-for list="{{sets}}" as="s" hint-placeholder-count="4">
+            <button type="button" class="a-lift" style="{{s.style}}">{{s.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="position: relative; flex: 1 1 440px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px">
+        <sc-for list="{{features}}" as="f" hint-placeholder-count="4">
+          <div style="padding: 20px; border-radius: 22px; border: 3px solid #1D2140; background: #FFFFFF; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 0 #1D2140">
+            <svg width="48" height="48" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle><path d="M5 50a45 45 0 0 1 90 0Z" fill="{{f.color}}" stroke="#1D2140" style="stroke-width: 7"></path><path d="M5 50h90" stroke="#1D2140" style="stroke-width: 7"></path><circle cx="50" cy="50" r="14" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle></svg>
+            <span style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 21px">{{f.title}}</span>
+            <span style="color: #4B5070; font-size: 15px">{{f.text}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+
+  <!-- VISIT US: a whole Poké Ball panel -->
+  <section style="padding: 96px clamp(16px, 4vw, 24px)">
+    <div style="max-width: 1200px; margin: 0 auto; border: 4px solid #1D2140; border-radius: 40px; overflow: hidden; box-shadow: 0 8px 0 #1D2140">
+      <div style="background: #E0262B; color: #FFFFFF; padding: 40px clamp(20px, 4vw, 48px) 64px; display: flex; flex-direction: column; gap: 10px">
+        <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; color: #B81D22; font-weight: 700; font-size: 14px">Visit us</span>
+        <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 44px; line-height: 1.05">See the cards in person</h2>
+        <p style="margin: 0; font-size: 18px; color: #FFE9EA">Drop by the shop in Rustboro City to check a card up close before you buy.</p>
+      </div>
+      <div style="position: relative; height: 18px; background: #1D2140">
+        <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 96px; height: 96px; border-radius: 50%; background: #FFFFFF; border: 12px solid #1D2140; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E0262B" aria-hidden="true" style="stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+        </span>
+      </div>
+      <div style="background: #FFFFFF; padding: 64px clamp(20px, 4vw, 48px) 40px; display: flex; flex-wrap: wrap; gap: 32px">
+        <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 20px">
+          <div><div style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Address</div><div style="color: #4B5070">8 Granite Way, Rustboro City<br>Hoenn Region</div></div>
+          <div><div style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Opening hours</div><div style="color: #4B5070">Open daily, 11:00 am – 9:00 pm</div></div>
+          <div><div style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Contact</div><div style="color: #4B5070">pietro_o@pokemail.com<br>(0151) 555 0384</div></div>
+        </div>
+        <div style="flex: 2 1 420px; min-width: 0; height: 280px; box-sizing: border-box; border: 3px dashed #C9CEDD; border-radius: 24px; background: #F4F5FA; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; font-weight: 700; color: #5B6080">Map placeholder<br>(Rustboro City town map art)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="position: relative; overflow: hidden; background: #1D2140; color: #D5D8E8">
+    <svg viewBox="0 0 100 100" aria-hidden="true" style="position: absolute; right: -60px; bottom: -200px; width: 380px; height: 380px; opacity: 0.12"><circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" style="stroke-width: 4"></circle><path d="M4 50h33M63 50h33" stroke="#FFFFFF" style="stroke-width: 4"></path><circle cx="50" cy="50" r="13" fill="none" stroke="#FFFFFF" style="stroke-width: 4"></circle></svg>
+    <div style="position: relative; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 36px clamp(16px, 4vw, 24px) 28px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+        <span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 24px; color: #FFFFFF">Holo Vault</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; font-weight: 700; color: #FFFFFF"><span>Shop</span><span>About</span><span>Visit Us</span><span>Cart</span></div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 16px; border-top: 1px solid #3A3F63; font-size: 13px">
+        <span>Prices: TCGplayer market data via tcgapi.dev, as of 22 Oct 2026.</span>
+        <span>Fan project. Not affiliated with Nintendo, Creatures, GAME FREAK or The Pokémon Company.</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var tints = ['#2A6FDB', '#E0262B', '#FFCB05', '#1D2140'];
+    var cards = [
+      { name: 'Sylveon ex', setName: 'Prismatic Evolutions', price: '$412.75', img: '/_blob/c4391dcd8a35e9858ed948d74bd33ba3' },
+      { name: 'Charizard ex', setName: '151', price: '$305.79', img: '/_blob/de47ca13d3f1840e73cdcb7490a78545' },
+      { name: 'Espeon ex', setName: 'Prismatic Evolutions', price: '$276.32', img: '/_blob/ee54594641f63c219d446f38e8239229' },
+      { name: 'Pikachu ex', setName: 'Surging Sparks', price: '$258.11', img: '/_blob/d210554509d2b62a9d831fbc86d2c50d' }
+    ].map(function (c, i) {
+      return Object.assign({}, c, {
+        alt: c.name + ', ' + c.setName,
+        topStyle: 'position: relative; height: 270px; background: ' + tints[i] + '; display: flex; align-items: center; justify-content: center; overflow: hidden',
+        imgStyle: 'position: relative; width: 150px; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 10px; border: 3px solid #1D2140; transform: rotate(' + (i % 2 ? 4 : -4) + 'deg)'
+      });
+    });
+    var sets = [
+      ['151 · 55', '#FDE9EA'], ['Prismatic Evolutions · 80', '#EAF1FD'], ['Surging Sparks · 87', '#FFF6D1'], ['Obsidian Flames · 54', '#F4F5FA']
+    ].map(function (s) {
+      return { label: s[0], style: 'height: 44px; padding: 0 16px; border-radius: 999px; border: 3px solid #1D2140; background: ' + s[1] + '; color: #1D2140; font-weight: 700; cursor: pointer; box-shadow: 0 3px 0 #1D2140' };
+    });
+    return {
+      heroBalls: [
+        { style: 'position: absolute; width: 420px; height: 420px; left: -140px; bottom: -160px; opacity: 0.14' },
+        { style: 'position: absolute; width: 200px; height: 200px; right: 6%; top: -60px; opacity: 0.14' },
+        { style: 'position: absolute; width: 90px; height: 90px; left: 46%; top: 30px; opacity: 0.18' }
+      ],
+      cards: cards,
+      sets: sets,
+      features: [
+        { color: '#FFCB05', title: 'Market priced', text: 'Prices follow TCGplayer market data, not guesswork.' },
+        { color: '#E0262B', title: 'Only the good stuff', text: 'Double Rare and up, from ex cards to Special Illustration Rares.' },
+        { color: '#2A6FDB', title: 'Fan-favourite sets', text: '151, Prismatic Evolutions, Surging Sparks and Obsidian Flames.' },
+        { color: '#1D2140', title: 'Sleeved and protected', text: 'Every card is sleeved and stored in a rigid top loader, so it reaches you in the same condition it left our case.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

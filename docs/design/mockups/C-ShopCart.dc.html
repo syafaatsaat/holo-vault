@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Holo Vault, Shop and Cart (Option C style)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&amp;family=Lilita+One&amp;family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#2A6FDB}a:hover{color:#1F56AD}
+button{font:inherit}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #2A6FDB;outline-offset:2px}
+button:disabled{opacity:.35;cursor:not-allowed}
+.c-dots{background-color:#FFFFFF;background-image:radial-gradient(#E6E9F2 2px,transparent 2.1px);background-size:26px 26px}
+.c-pop{transition:transform .18s ease}
+.c-pop:hover{transform:scale(1.04) rotate(-2deg)}
+.c-wiggle:hover{animation:c-wiggle .5s ease}
+@keyframes c-wiggle{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.c-spin{animation:c-spin 60s linear infinite}
+@keyframes c-spin{to{transform:rotate(360deg)}}
+.c-nav{transition:background .15s ease}
+.c-nav:hover{background:rgba(255,255,255,.16)}
+.a-lift{transition:transform .2s ease,box-shadow .2s ease}
+.a-lift:hover{transform:translateY(-4px) rotate(-1deg);box-shadow:0 8px 0 #1D2140}
+.c-soft{transition:background .15s ease}
+.c-soft:hover{background:#FFF6D1}
+.c-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.c-search::placeholder{color:#5B6080;font-weight:600}
+.c-search::-webkit-search-cancel-button{display:none}
+.c-search:focus{box-shadow:0 4px 0 #1D2140,0 0 0 4px #FFCB05;outline:none}
+.c-navgrid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px 12px}
+@media (max-width:640px){.c-navgrid{grid-template-columns:1fr auto;grid-template-areas:"logo cart" "links links"}.c-logo{grid-area:logo}.c-cart{grid-area:cart}.c-links{grid-area:links}}
+@media (prefers-reduced-motion:reduce){.c-spin,.c-wiggle:hover{animation:none}.c-pop:hover,.a-lift:hover{transform:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FFFFFF; color: #1D2140; font-family: 'Nunito Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.5; overflow-x: clip">
+
+  <!-- NAVBAR: blends into the red band, shrinks into a glass bar on scroll -->
+  <header style="{{headerStyle}}">
+    <nav aria-label="Main" class="c-navgrid" style="{{navStyle}}">
+      <a href="OptionC-Stickers.dc.html" class="c-logo c-wiggle" aria-label="Holo Vault home" style="justify-self: start; display: flex; align-items: center">
+        <svg viewBox="0 0 80 100" aria-hidden="true" style="{{logoStyle}}">
+          <polygon points="{{packPoints}}" fill="#FFCB05"></polygon>
+          <polygon points="{{packFoil}}" fill="#E6E9F2"></polygon>
+          <polygon points="{{packPoints}}" fill="none" stroke="#1D2140" style="stroke-width: 5; stroke-linejoin: round"></polygon>
+          <path d="M4 17H59M4 83H76" stroke="#1D2140" style="stroke-width: 4"></path>
+          <circle cx="40" cy="50" r="15" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 4.5"></circle>
+          <path d="M25 50a15 15 0 0 1 30 0Z" fill="#E0262B" stroke="#1D2140" style="stroke-width: 4.5"></path>
+          <circle cx="40" cy="50" r="5" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 4"></circle>
+        </svg>
+      </a>
+      <div class="c-links" style="display: flex; justify-content: center; gap: 6px">
+        <button type="button" class="c-pop" onClick="{{goShop}}" aria-current="{{shopCurrent}}" style="{{shopLinkStyle}}">Shop</button>
+        <a href="OptionC-Stickers.dc.html" class="c-nav" style="{{linkStyle}}">About</a>
+        <button type="button" class="c-nav" onClick="{{goVisit}}" style="{{linkStyle}}">Visit Us</button>
+      </div>
+      <div class="c-cart" style="justify-self: end">
+        <button type="button" class="c-pop" onClick="{{goCart}}" aria-current="{{cartCurrent}}" aria-label="{{cartAria}}" style="{{cartBtnStyle}}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><circle cx="9" cy="20" r="1.5"></circle><circle cx="18" cy="20" r="1.5"></circle><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21.5 7H6"></path></svg>
+          Cart
+          <sc-if value="{{hasCount}}" hint-placeholder-val="{{ true }}">
+            <span style="position: absolute; right: -10px; top: -12px; min-width: 30px; height: 30px; padding: 0 6px; box-sizing: border-box; border-radius: 15px; background: #2A6FDB; color: #FFFFFF; border: 3px solid #1D2140; display: flex; align-items: center; justify-content: center; font-family: 'Lilita One', sans-serif; font-size: 15px; transform: rotate(10deg)">{{count}}</span>
+          </sc-if>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- PAGE HEADER: a short red pack band -->
+  <div style="position: relative; z-index: 2; overflow: hidden; background: #E0262B">
+    <sc-for list="{{bgBalls}}" as="b" hint-placeholder-count="2">
+      <svg viewBox="0 0 100 100" aria-hidden="true" class="c-spin" style="{{b.style}}"><circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" style="stroke-width: 3"></circle><path d="M4 50h33M63 50h33" stroke="#FFFFFF" style="stroke-width: 3"></path><circle cx="50" cy="50" r="13" fill="none" stroke="#FFFFFF" style="stroke-width: 3"></circle></svg>
+    </sc-for>
+    <div style="position: relative; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 132px clamp(16px, 4vw, 24px) 72px; color: #FFFFFF; display: flex; flex-direction: column; gap: 14px">
+      <sc-if value="{{isShop}}" hint-placeholder-val="{{ true }}">
+        <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; color: #B81D22; font-weight: 700; font-size: 14px">276 cards · 4 sets · Prices as of 22 Oct 2026</span>
+        <h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: clamp(44px, 6vw, 72px); line-height: 1">Shop the <span style="color: #FFCB05">vault.</span></h1>
+        <p style="margin: 0; max-width: 560px; font-size: 18px; color: #FFE9EA">Every card is Double Rare or higher, priced from TCGplayer market data.</p>
+      </sc-if>
+      <sc-if value="{{isCart}}" hint-placeholder-val="{{ false }}">
+        <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; color: #B81D22; font-weight: 700; font-size: 14px">{{countText}}</span>
+        <h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: clamp(44px, 6vw, 72px); line-height: 1">Your <span style="color: #FFCB05">cart.</span></h1>
+        <p style="margin: 0; max-width: 560px; font-size: 18px; color: #FFE9EA">Change quantities or remove cards before you visit the shop.</p>
+      </sc-if>
+    </div>
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 10px; border-top: 3px dashed rgba(255,255,255,0.55)"></div>
+  </div>
+
+  <!-- Crimped seal (static on these pages) -->
+  <div aria-hidden="true" style="position: relative; z-index: 3; height: 52px; margin-bottom: -52px">
+    <div style="height: 36px; background-color: #C81E24; background-image: repeating-linear-gradient(90deg, rgba(29,33,64,0.2) 0 2px, transparent 2px 9px)"></div>
+    <svg viewBox="0 0 1440 16" preserveAspectRatio="none" style="display: block; width: 100%; height: 16px"><polygon points="{{sealTeeth}}" fill="#C81E24"></polygon></svg>
+  </div>
+
+  <main class="c-dots" style="position: relative; z-index: 1; padding: 104px clamp(16px, 4vw, 24px) 40px">
+    <div style="max-width: 1200px; margin: 0 auto">
+
+      <!-- SHOP -->
+      <sc-if value="{{isShop}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 28px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+          <div role="search" style="position: relative; flex: 1 1 320px; min-width: 0">
+            <label for="card-search" class="c-sr">Search cards by name</label>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2140" aria-hidden="true" style="position: absolute; left: 20px; top: 50%; transform: translateY(-60%); stroke-width: 2.8; stroke-linecap: round; pointer-events: none"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+            <input id="card-search" class="c-search" type="search" autocomplete="off" placeholder="Search cards by name, e.g. Charizard" value="{{query}}" onChange="{{onQuery}}" style="width: 100%; height: 58px; box-sizing: border-box; padding: 0 60px 0 54px; border: 3px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-family: 'Nunito Sans', sans-serif; font-size: 17px; font-weight: 700; box-shadow: 0 4px 0 #1D2140">
+            <sc-if value="{{hasQuery}}" hint-placeholder-val="{{ false }}">
+              <button type="button" class="c-soft" onClick="{{clearQuery}}" aria-label="Clear search" style="position: absolute; right: 9px; top: 50%; transform: translateY(-60%); width: 40px; height: 40px; border-radius: 50%; border: 2px solid #1D2140; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3.4; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+              </button>
+            </sc-if>
+          </div>
+          <div style="position: relative; flex: 0 0 auto">
+            <label for="card-sort" class="c-sr">Sort cards</label>
+            <select id="card-sort" class="c-search" value="{{sort}}" onChange="{{onSort}}" style="appearance: none; -webkit-appearance: none; height: 58px; padding: 0 52px 0 22px; border: 3px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-family: 'Nunito Sans', sans-serif; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #1D2140">
+              <sc-for list="{{sortOptions}}" as="o" hint-placeholder-count="4">
+                <option value="{{o.value}}">{{o.label}}</option>
+              </sc-for>
+            </select>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D2140" aria-hidden="true" style="position: absolute; right: 20px; top: 50%; transform: translateY(-60%); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; pointer-events: none"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px">
+            <div role="group" aria-label="Filter by set" style="display: flex; flex-wrap: wrap; gap: 10px">
+              <sc-for list="{{chips}}" as="chip" hint-placeholder-count="5">
+                <button type="button" class="a-lift" onClick="{{chip.pick}}" aria-pressed="{{chip.pressed}}" style="{{chip.style}}">{{chip.label}}</button>
+              </sc-for>
+            </div>
+            <span aria-live="polite" style="font-weight: 700; color: #4B5070">{{shopCountText}}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px 28px">
+            <sc-for list="{{shopItems}}" as="item" hint-placeholder-count="8">
+              <article class="a-lift" style="display: flex; flex-direction: column; gap: 14px; padding: 18px; border-radius: 26px; border: 3px solid #1D2140; background: #FFFFFF; box-shadow: 0 5px 0 #1D2140">
+                <img src="{{item.img}}" alt="{{item.alt}}" style="display: block; width: 100%; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 14px; border: 3px solid #1D2140; box-sizing: border-box; background: #F4F5FA">
+                <div style="display: flex; flex-direction: column; gap: 3px; flex: 1">
+                  <span style="{{item.rarityStyle}}">{{item.rarity}}</span>
+                  <h2 style="margin: 6px 0 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 24px; line-height: 1.15">{{item.name}}</h2>
+                  <span style="font-size: 15px; font-weight: 600; color: #5B6080">{{item.setName}} · {{item.number}}</span>
+                </div>
+                <div style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 30px; line-height: 1; color: #E0262B">{{item.priceText}}</div>
+                <div style="display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 999px; border: 3px solid #1D2140; background: #F4F5FA">
+                  <button type="button" class="c-soft" onClick="{{item.dec}}" disabled="{{item.minDisabled}}" aria-label="{{item.decAria}}" style="width: 44px; height: 44px; flex: none; border-radius: 50%; border: 2px solid #1D2140; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3.4; stroke-linecap: round"><path d="M5 12h14"></path></svg>
+                  </button>
+                  <input type="text" inputmode="numeric" value="{{item.qty}}" onChange="{{item.onQty}}" onBlur="{{item.onQtyBlur}}" aria-label="{{item.qtyAria}}" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; border: 0; background: transparent; color: #1D2140; text-align: center; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 20px">
+                  <button type="button" class="c-soft" onClick="{{item.inc}}" disabled="{{item.maxDisabled}}" aria-label="{{item.incAria}}" style="width: 44px; height: 44px; flex: none; border-radius: 50%; border: 2px solid #1D2140; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3.4; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>
+                  </button>
+                </div>
+                <button type="button" onClick="{{item.add}}" style="{{item.addStyle}}">{{item.addLabel}}</button>
+              </article>
+            </sc-for>
+          </div>
+          <sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}">
+            <div style="max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 36px 28px; text-align: center; border-radius: 28px; border: 3px solid #1D2140; background: #FFFFFF; box-shadow: 0 6px 0 #1D2140">
+              <svg width="64" height="64" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle><path d="M6 50a44 44 0 0 1 88 0Z" fill="#E0262B" stroke="#1D2140" style="stroke-width: 7"></path><path d="M6 50h88" stroke="#1D2140" style="stroke-width: 7"></path><circle cx="50" cy="50" r="14" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 7"></circle></svg>
+              <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 28px">No cards caught</h2>
+              <p style="margin: 0; color: #4B5070; font-size: 17px">{{noResultsText}}</p>
+              <button type="button" class="a-lift" onClick="{{resetSearch}}" style="height: 50px; padding: 0 24px; border: 3px solid #1D2140; border-radius: 999px; background: #E0262B; color: #FFFFFF; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 18px; cursor: pointer; box-shadow: 0 4px 0 #1D2140">Clear search and filters</button>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- CART -->
+      <sc-if value="{{isCart}}" hint-placeholder-val="{{ false }}">
+        <div>
+          <sc-if value="{{cartEmpty}}" hint-placeholder-val="{{ false }}">
+            <div style="max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 40px 28px; text-align: center; border-radius: 28px; border: 3px solid #1D2140; background: #FFFFFF; box-shadow: 0 6px 0 #1D2140">
+              <svg viewBox="0 0 80 100" width="104" height="130" aria-hidden="true" style="transform: rotate(-6deg)">
+                <polygon points="{{packPoints}}" fill="#FFCB05"></polygon>
+                <polygon points="{{packFoil}}" fill="#E6E9F2"></polygon>
+                <polygon points="{{packPoints}}" fill="none" stroke="#1D2140" style="stroke-width: 3; stroke-linejoin: round"></polygon>
+                <path d="M4 17H59M4 83H76" stroke="#1D2140" style="stroke-width: 2.5"></path>
+                <circle cx="40" cy="50" r="13" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 3"></circle>
+                <path d="M27 50a13 13 0 0 1 26 0Z" fill="#E0262B" stroke="#1D2140" style="stroke-width: 3"></path>
+                <circle cx="40" cy="50" r="4.5" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 2.5"></circle>
+              </svg>
+              <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 32px">Your pack is empty</h2>
+              <p style="margin: 0; color: #4B5070; font-size: 17px">No cards caught yet. Head to the shop to find one.</p>
+              <button type="button" class="a-lift" onClick="{{goShop}}" style="height: 54px; padding: 0 28px; border: 3px solid #1D2140; border-radius: 999px; background: #E0262B; color: #FFFFFF; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 19px; cursor: pointer; box-shadow: 0 4px 0 #1D2140">Go to the shop</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{cartHasItems}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px">
+              <ul style="flex: 999 1 600px; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 24px">
+                <sc-for list="{{cartItems}}" as="row" hint-placeholder-count="2">
+                  <li style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; padding: 20px 24px; border-radius: 26px; border: 3px solid #1D2140; background: #FFFFFF; box-shadow: 0 5px 0 #1D2140">
+                    <img src="{{row.img}}" alt="{{row.alt}}" style="width: 128px; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 14px; border: 3px solid #1D2140; box-sizing: border-box; flex: none; background: #F4F5FA">
+                    <div style="flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+                      <span style="{{row.rarityStyle}}">{{row.rarity}}</span>
+                      <h2 style="margin: 6px 0 0; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 24px; line-height: 1.15">{{row.name}}</h2>
+                      <span style="font-size: 15px; font-weight: 600; color: #5B6080">{{row.setName}} · {{row.number}}</span>
+                      <span style="font-size: 15px; font-weight: 600; color: #5B6080">{{row.priceText}} each</span>
+                    </div>
+                    <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; margin-left: auto">
+                      <div style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 30px; line-height: 1; color: #E0262B">{{row.lineText}}</div>
+                      <div style="display: flex; align-items: center; gap: 6px; width: 190px; padding: 4px; box-sizing: border-box; border-radius: 999px; border: 3px solid #1D2140; background: #F4F5FA">
+                        <button type="button" class="c-soft" onClick="{{row.dec}}" disabled="{{row.minDisabled}}" aria-label="{{row.decAria}}" style="width: 44px; height: 44px; flex: none; border-radius: 50%; border: 2px solid #1D2140; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3.4; stroke-linecap: round"><path d="M5 12h14"></path></svg>
+                        </button>
+                        <input type="text" inputmode="numeric" value="{{row.qty}}" onChange="{{row.onQty}}" onBlur="{{row.onQtyBlur}}" aria-label="{{row.qtyAria}}" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; border: 0; background: transparent; color: #1D2140; text-align: center; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 20px">
+                        <button type="button" class="c-soft" onClick="{{row.inc}}" disabled="{{row.maxDisabled}}" aria-label="{{row.incAria}}" style="width: 44px; height: 44px; flex: none; border-radius: 50%; border: 2px solid #1D2140; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3.4; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>
+                        </button>
+                      </div>
+                      <button type="button" class="c-soft" onClick="{{row.remove}}" aria-label="{{row.removeAria}}" style="height: 46px; padding: 0 18px; border: 3px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-weight: 800; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 3px 0 #1D2140">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>
+                        Remove
+                      </button>
+                    </div>
+                  </li>
+                </sc-for>
+              </ul>
+
+              <!-- Order summary: a small Poké Ball panel -->
+              <aside aria-label="Order summary" style="flex: 1 1 320px; position: sticky; top: 100px; box-sizing: border-box; border: 3px solid #1D2140; border-radius: 28px; overflow: hidden; background: #FFFFFF; box-shadow: 0 6px 0 #1D2140">
+                <div style="padding: 20px 24px 34px; background: #E0262B; color: #FFFFFF">
+                  <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 30px">Summary</h2>
+                </div>
+                <div aria-hidden="true" style="position: relative; height: 12px; background: #1D2140">
+                  <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 56px; height: 56px; border-radius: 50%; background: #FFFFFF; border: 8px solid #1D2140; box-sizing: border-box"></span>
+                </div>
+                <div style="padding: 40px 24px 24px; display: flex; flex-direction: column; gap: 14px">
+                  <div style="display: flex; justify-content: space-between; font-size: 17px; font-weight: 700"><span>Items</span><span>{{count}}</span></div>
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 14px; border-top: 3px dashed #E1E4EE"><span style="font-size: 17px; font-weight: 800">Subtotal</span><span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 36px; color: #E0262B">{{subtotalText}}</span></div>
+                  <p style="margin: 0; font-size: 14px; color: #5B6080">Checkout isn't part of this demo store.</p>
+                  <button type="button" class="a-lift" onClick="{{goShop}}" style="height: 54px; border: 3px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 19px; cursor: pointer; box-shadow: 0 4px 0 #1D2140">Continue shopping</button>
+                </div>
+              </aside>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+
+  <!-- VISIT US (same as the home page) -->
+  <section id="visit" class="c-dots" style="scroll-margin-top: 80px; padding: 72px clamp(16px, 4vw, 24px) 96px">
+    <div style="max-width: 1200px; margin: 0 auto; border: 4px solid #1D2140; border-radius: 40px; overflow: hidden; box-shadow: 0 8px 0 #1D2140">
+      <div style="background: #E0262B; color: #FFFFFF; padding: 40px clamp(20px, 4vw, 48px) 64px; display: flex; flex-direction: column; gap: 10px">
+        <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; color: #B81D22; font-weight: 700; font-size: 14px">Visit us</span>
+        <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 44px; line-height: 1.05">See the cards in person</h2>
+        <p style="margin: 0; font-size: 18px; color: #FFE9EA">Drop by the shop in Rustboro City to check a card up close before you buy.</p>
+      </div>
+      <div style="position: relative; height: 18px; background: #1D2140">
+        <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 96px; height: 96px; border-radius: 50%; background: #FFFFFF; border: 12px solid #1D2140; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E0262B" aria-hidden="true" style="stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+        </span>
+      </div>
+      <div style="background: #FFFFFF; padding: 64px clamp(20px, 4vw, 48px) 40px; display: flex; flex-wrap: wrap; gap: 32px">
+        <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 20px">
+          <div><div style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Address</div><div style="color: #4B5070">8 Granite Way, Rustboro City<br>Hoenn Region</div></div>
+          <div><div style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Opening hours</div><div style="color: #4B5070">Open daily, 11:00 am – 9:00 pm</div></div>
+          <div><div style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Contact</div><div style="color: #4B5070">holovault@pokemail.com<br>(0151) 555 0384</div></div>
+        </div>
+        <div style="flex: 2 1 420px; min-width: 0; height: 280px; box-sizing: border-box; border: 3px dashed #C9CEDD; border-radius: 24px; background: #F4F5FA; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; font-weight: 700; color: #5B6080">Map placeholder<br>(Rustboro City town map art)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crimped pack edge, teeth pointing up -->
+  <div aria-hidden="true" style="position: relative; margin-top: -16px">
+    <svg viewBox="0 0 1440 16" preserveAspectRatio="none" style="display: block; width: 100%; height: 16px"><polygon points="{{footerTeeth}}" fill="#C81E24"></polygon></svg>
+    <div style="height: 36px; background-color: #C81E24; background-image: repeating-linear-gradient(90deg, rgba(29,33,64,0.2) 0 2px, transparent 2px 9px)"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="position: relative; overflow: hidden; background: #E0262B; color: #FFFFFF">
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 10px; border-top: 3px dashed rgba(255,255,255,0.55)"></div>
+    <svg viewBox="0 0 100 100" aria-hidden="true" class="c-spin" style="position: absolute; right: -80px; top: -120px; width: 340px; height: 340px; opacity: 0.14"><circle cx="50" cy="50" r="46" fill="none" stroke="#FFFFFF" style="stroke-width: 3"></circle><path d="M4 50h33M63 50h33" stroke="#FFFFFF" style="stroke-width: 3"></path><circle cx="50" cy="50" r="13" fill="none" stroke="#FFFFFF" style="stroke-width: 3"></circle></svg>
+    <div style="position: relative; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 40px clamp(16px, 4vw, 24px) 24px; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+        <span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 24px">Holo Vault</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px 24px; font-weight: 700"><span>Shop</span><span>About</span><span>Visit Us</span><span>Cart</span></div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 14px; border-top: 2px solid #B81D22; font-size: 13px; color: #FFE9EA">
+        <span>Prices: TCGplayer market data via tcgapi.dev, as of 22 Oct 2026.</span>
+        <span>Fan project. Not affiliated with Nintendo, Creatures, GAME FREAK or The Pokémon Company.</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3900}}'>
+var SETS = [
+  { slug: '151', name: '151' },
+  { slug: 'prismatic-evolutions', name: 'Prismatic Evolutions' },
+  { slug: 'surging-sparks', name: 'Surging Sparks' },
+  { slug: 'obsidian-flames', name: 'Obsidian Flames' }
+];
+
+var CARDS = [
+  { id: 13440, name: 'Umbreon ex', number: '161/131', rarity: 'Special Illustration Rare', set: 'prismatic-evolutions', price: 1215.47, img: '/_blob/aae45c049f680d3051fa7d38ba7c9848' },
+  { id: 13471, name: 'Sylveon ex', number: '156/131', rarity: 'Special Illustration Rare', set: 'prismatic-evolutions', price: 412.75, img: '/_blob/c4391dcd8a35e9858ed948d74bd33ba3' },
+  { id: 21898, name: 'Charizard ex', number: '199/165', rarity: 'Special Illustration Rare', set: '151', price: 305.79, img: '/_blob/de47ca13d3f1840e73cdcb7490a78545' },
+  { id: 13465, name: 'Espeon ex', number: '155/131', rarity: 'Special Illustration Rare', set: 'prismatic-evolutions', price: 276.32, img: '/_blob/ee54594641f63c219d446f38e8239229' },
+  { id: 18189, name: 'Pikachu ex', number: '238/191', rarity: 'Special Illustration Rare', set: 'surging-sparks', price: 258.11, img: '/_blob/d210554509d2b62a9d831fbc86d2c50d' },
+  { id: 18183, name: 'Latias ex', number: '239/191', rarity: 'Special Illustration Rare', set: 'surging-sparks', price: 173.57, img: '/_blob/7760d5de8dcb4c7baee1591a4bd10cdf' },
+  { id: 21888, name: 'Blastoise ex', number: '200/165', rarity: 'Special Illustration Rare', set: '151', price: 108.89, img: '/_blob/e1f1bca9b80ec09955eb183edfabfcca' },
+  { id: 20463, name: 'Charizard ex', number: '223/197', rarity: 'Special Illustration Rare', set: 'obsidian-flames', price: 89.11, img: '/_blob/84bb6346adb6b2bbff134d0de3e111d1' },
+  { id: 21895, name: 'Squirtle', number: '170/165', rarity: 'Illustration Rare', set: '151', price: 87.43, img: '/_blob/fc3c782289d20a81739f8f2bae5c7fe7' },
+  { id: 20434, name: 'Cleffa', number: '202/197', rarity: 'Illustration Rare', set: 'obsidian-flames', price: 35.22, img: '/_blob/4bc517f9c1b28576f3f0925a94fc72dc' },
+  { id: 17936, name: 'Latias ex', number: '076/191', rarity: 'Double Rare', set: 'surging-sparks', price: 5.64, img: '/_blob/cb19231b2450b71c1ab2d9c8bbbbaff4' },
+  { id: 20439, name: 'Dragonite ex', number: '159/197', rarity: 'Double Rare', set: 'obsidian-flames', price: 3.51, img: '/_blob/cc1a13e7805541da2cc5b5d22658a9d6' }
+];
+
+// Badge colours per rarity: background, text.
+var RARITY_COLORS = {
+  'Special Illustration Rare': ['#FFCB05', '#1D2140'],
+  'Illustration Rare': ['#EAF1FD', '#1F56AD'],
+  'Double Rare': ['#FDE9EA', '#B81D22']
+};
+
+var MAX_QTY = 99;
+
+function setName(slug) {
+  for (var i = 0; i < SETS.length; i++) if (SETS[i].slug === slug) return SETS[i].name;
+  return slug;
+}
+
+function money(n) {
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function clamp(value) {
+  var n = parseInt(value, 10);
+  if (isNaN(n) || n < 1) return 1;
+  return Math.min(n, MAX_QTY);
+}
+
+function digitsOnly(value) {
+  return String(value).replace(/[^0-9]/g, '').slice(0, 2);
+}
+
+function teeth(width, height, toothWidth, pointUp) {
+  var base = pointUp ? height : 0;
+  var pts = ['0,' + base];
+  for (var x = toothWidth / 2, tip = true; x <= width; x += toothWidth / 2, tip = !tip) pts.push(x + ',' + (tip ? height - base : base));
+  pts.push(width + ',' + base);
+  return pts.join(' ');
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { page: 'shop', filter: 'all', query: '', sort: 'price-desc', drafts: {}, cart: { 13440: 1, 18189: 2 }, added: null, compact: false };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this.onScroll = function () {
+      var compact = window.scrollY > 40;
+      if (compact !== self.state.compact) self.setState({ compact: compact });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    clearTimeout(this.addedTimer);
+  }
+
+  go(page) {
+    this.setState({ page: page });
+    window.scrollTo({ top: 0 });
+  }
+
+  setDraft(id, value) {
+    var drafts = Object.assign({}, this.state.drafts);
+    drafts[id] = value;
+    this.setState({ drafts: drafts });
+  }
+
+  setCartQty(id, value) {
+    var cart = Object.assign({}, this.state.cart);
+    cart[id] = value;
+    this.setState({ cart: cart });
+  }
+
+  addToCart(id) {
+    var qty = clamp(this.state.drafts[id] ?? 1);
+    var cart = Object.assign({}, this.state.cart);
+    cart[id] = Math.min((Number(cart[id]) || 0) + qty, MAX_QTY);
+    var drafts = Object.assign({}, this.state.drafts);
+    drafts[id] = 1;
+    this.setState({ cart: cart, drafts: drafts, added: id });
+    clearTimeout(this.addedTimer);
+    this.addedTimer = setTimeout(() => this.setState({ added: null }), 1200);
+  }
+
+  removeFromCart(id) {
+    var cart = Object.assign({}, this.state.cart);
+    delete cart[id];
+    this.setState({ cart: cart });
+  }
+
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var compact = s.compact;
+    var isShop = s.page === 'shop';
+    var isCart = s.page === 'cart';
+
+    function rarityStyle(rarity) {
+      var c = RARITY_COLORS[rarity] || ['#F4F5FA', '#1D2140'];
+      return 'align-self: flex-start; padding: 4px 12px; border-radius: 999px; border: 2px solid #1D2140; background: ' + c[0] + '; color: ' + c[1] + '; font-size: 13px; font-weight: 800; letter-spacing: 0.02em';
+    }
+
+    var cartIds = Object.keys(s.cart);
+    var count = 0;
+    var subtotal = 0;
+    var cartItems = CARDS.filter(function (c) { return s.cart[c.id] !== undefined; }).map(function (c) {
+      var raw = s.cart[c.id];
+      var qty = clamp(raw);
+      count += qty;
+      subtotal += qty * c.price;
+      return {
+        img: c.img, name: c.name, number: c.number, rarity: c.rarity, setName: setName(c.set),
+        alt: c.name + ', ' + setName(c.set) + ' ' + c.rarity,
+        rarityStyle: rarityStyle(c.rarity),
+        priceText: money(c.price),
+        lineText: money(qty * c.price),
+        qty: raw,
+        minDisabled: qty <= 1,
+        maxDisabled: qty >= MAX_QTY,
+        qtyAria: 'Quantity of ' + c.name + ' in cart',
+        decAria: 'Decrease ' + c.name + ' quantity',
+        incAria: 'Increase ' + c.name + ' quantity',
+        removeAria: 'Remove ' + c.name + ' from cart',
+        dec: function () { self.setCartQty(c.id, Math.max(1, qty - 1)); },
+        inc: function () { self.setCartQty(c.id, Math.min(MAX_QTY, qty + 1)); },
+        onQty: function (e) { self.setCartQty(c.id, digitsOnly(e.target.value)); },
+        onQtyBlur: function () { self.setCartQty(c.id, clamp(s.cart[c.id])); },
+        remove: function () { self.removeFromCart(c.id); }
+      };
+    });
+
+    var needle = s.query.trim().toLowerCase();
+    var visible = CARDS.filter(function (c) {
+      return (s.filter === 'all' || c.set === s.filter) && (!needle || c.name.toLowerCase().includes(needle));
+    });
+    var filterName = s.filter === 'all' ? '' : ' in ' + setName(s.filter);
+    var byName = function (a, b) { return a.name.localeCompare(b.name) || b.price - a.price; };
+    var compare = {
+      'price-desc': function (a, b) { return b.price - a.price || byName(a, b); },
+      'price-asc': function (a, b) { return a.price - b.price || byName(a, b); },
+      'name-asc': byName,
+      'name-desc': function (a, b) { return byName(b, a); }
+    }[s.sort];
+    visible = visible.slice().sort(compare);
+    var shopItems = visible.map(function (c) {
+      var raw = s.drafts[c.id] ?? 1;
+      var qty = clamp(raw);
+      var justAdded = s.added === c.id;
+      return {
+        img: c.img, name: c.name, number: c.number, rarity: c.rarity, setName: setName(c.set),
+        alt: c.name + ', ' + setName(c.set) + ' ' + c.rarity,
+        priceText: money(c.price),
+        rarityStyle: rarityStyle(c.rarity),
+        qty: raw,
+        minDisabled: qty <= 1,
+        maxDisabled: qty >= MAX_QTY,
+        qtyAria: 'Quantity of ' + c.name,
+        decAria: 'Decrease ' + c.name + ' quantity',
+        incAria: 'Increase ' + c.name + ' quantity',
+        dec: function () { self.setDraft(c.id, Math.max(1, qty - 1)); },
+        inc: function () { self.setDraft(c.id, Math.min(MAX_QTY, qty + 1)); },
+        onQty: function (e) { self.setDraft(c.id, digitsOnly(e.target.value)); },
+        onQtyBlur: function () { self.setDraft(c.id, clamp(s.drafts[c.id] ?? 1)); },
+        add: function () { self.addToCart(c.id); },
+        addLabel: justAdded ? 'Added to cart ✓' : 'Add to cart',
+        addStyle: 'height: 54px; border: 3px solid #1D2140; border-radius: 999px; color: #FFFFFF; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 19px; cursor: pointer; box-shadow: 0 4px 0 #1D2140; transition: background .2s ease; background: ' + (justAdded ? '#2A6FDB' : '#E0262B')
+      };
+    });
+
+    var chips = [{ slug: 'all', label: 'All sets' }].concat(SETS.map(function (x) { return { slug: x.slug, label: x.name }; })).map(function (d) {
+      var active = s.filter === d.slug;
+      return {
+        label: d.label,
+        pressed: active ? 'true' : 'false',
+        pick: function () { self.setState({ filter: d.slug }); },
+        style: 'height: 44px; padding: 0 18px; border-radius: 999px; border: 3px solid #1D2140; font-weight: 800; cursor: pointer; box-shadow: 0 3px 0 #1D2140; ' +
+          (active ? 'background: #E0262B; color: #FFFFFF;' : 'background: #FFFFFF; color: #1D2140;')
+      };
+    });
+
+    var navLinkBase = 'height: 42px; padding: 0 16px; box-sizing: border-box; border: 3px solid transparent; border-radius: 999px; background: none; font-weight: 800; font-size: 16px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; transition: color .35s ease; color: ' + (compact ? '#1D2140' : '#FFFFFF') + ';';
+
+    return {
+      isShop: isShop,
+      isCart: isCart,
+      goShop: function () { self.go('shop'); },
+      goCart: function () { self.go('cart'); },
+      goVisit: function () {
+        var el = document.getElementById('visit');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      },
+
+      headerStyle: 'position: fixed; left: 0; right: 0; top: 0; z-index: 50; pointer-events: none; transition: padding .3s ease; padding: ' + (compact ? '10px 16px' : '0'),
+      navStyle: 'pointer-events: auto; box-sizing: border-box; margin: 0 auto; transition: max-width .35s ease, padding .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease; border-radius: 28px; ' +
+        (compact
+          ? 'max-width: 920px; padding: 6px 10px 6px 12px; background-color: rgba(255,255,255,0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 2px solid rgba(29,33,64,0.18); box-shadow: 0 10px 28px rgba(29,33,64,0.18)'
+          : 'max-width: 1200px; padding: 14px clamp(16px, 4vw, 24px); background-color: rgba(255,255,255,0); border: 2px solid rgba(255,255,255,0); box-shadow: none'),
+      logoStyle: 'display: block; overflow: visible; transition: width .35s ease, height .35s ease; ' + (compact ? 'width: 34px; height: 42px' : 'width: 44px; height: 55px'),
+      linkStyle: navLinkBase,
+      shopLinkStyle: isShop
+        ? 'height: 42px; padding: 0 18px; border: 3px solid #1D2140; border-radius: 999px; background: #FFCB05; color: #1D2140; font-weight: 800; font-size: 16px; cursor: pointer; transform: rotate(-2deg)'
+        : navLinkBase,
+      shopCurrent: isShop ? 'page' : 'false',
+      cartCurrent: isCart ? 'page' : 'false',
+      cartBtnStyle: 'position: relative; height: 48px; padding: 0 20px; border: 3px solid #1D2140; border-radius: 999px; color: #1D2140; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 3px 3px 0 #1D2140; background: ' + (isCart ? '#FFCB05' : '#FFFFFF'),
+
+      packPoints: '4,6 10,2 16,6 22,2 28,6 34,2 40,6 46,2 52,6 56,11 60,8 63,15 68,13 70,20 76,23 76,94 70,98 64,94 58,98 52,94 46,98 40,94 34,98 28,94 22,98 16,94 10,98 4,94',
+      packFoil: '52,6 56,11 60,8 63,15 68,13 70,20 76,23 76,29 69,26 66,20 62,21 58,14 55,16 51,10',
+      sealTeeth: teeth(1440, 16, 20, false),
+      footerTeeth: teeth(1440, 16, 20, true),
+      bgBalls: [
+        { style: 'position: absolute; width: 360px; height: 360px; left: -120px; bottom: -200px; opacity: 0.14' },
+        { style: 'position: absolute; width: 200px; height: 200px; right: 6%; top: -50px; opacity: 0.14' }
+      ],
+
+      count: count,
+      countText: count + (count === 1 ? ' card' : ' cards') + ' in your cart',
+      hasCount: count > 0,
+      cartAria: 'Cart, ' + count + (count === 1 ? ' item' : ' items'),
+      cartItems: cartItems,
+      cartEmpty: cartIds.length === 0,
+      cartHasItems: cartIds.length > 0,
+      subtotalText: money(subtotal),
+      shopItems: shopItems,
+      shopCountText: needle
+        ? visible.length + (visible.length === 1 ? ' card matches' : ' cards match') + ' “' + s.query.trim() + '”' + filterName
+        : 'Showing ' + visible.length + ' of 276 cards in this mockup',
+      query: s.query,
+      sort: s.sort,
+      onSort: function (e) { self.setState({ sort: e.target.value }); },
+      sortOptions: [
+        { value: 'price-desc', label: 'Price: high to low' },
+        { value: 'price-asc', label: 'Price: low to high' },
+        { value: 'name-asc', label: 'Name: A to Z' },
+        { value: 'name-desc', label: 'Name: Z to A' }
+      ],
+      hasQuery: s.query.length > 0,
+      onQuery: function (e) { self.setState({ query: e.target.value }); },
+      clearQuery: function () {
+        self.setState({ query: '' });
+        var el = document.getElementById('card-search');
+        if (el) el.focus();
+      },
+      resetSearch: function () { self.setState({ query: '', filter: 'all' }); },
+      noResults: visible.length === 0,
+      noResultsText: 'Nothing matches “' + s.query.trim() + '”' + filterName + '. Check the spelling or try another set.',
+      chips: chips
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Holo Vault</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#2A6FDB}a:hover{color:#1F56AD}
+button{font:inherit}
+button:focus-visible,input:focus-visible{outline:3px solid #2A6FDB;outline-offset:2px}
+button:disabled{opacity:.35;cursor:not-allowed}
+.hv-nav{transition:background .15s ease}
+.hv-nav:hover{background:rgba(255,255,255,.16)}
+.hv-btn{transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.hv-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 rgba(29,33,64,.12)}
+.hv-btn:active{transform:translateY(1px);box-shadow:none}
+.hv-soft{transition:background .15s ease,border-color .15s ease}
+.hv-soft:hover{background:#F1F3FA;border-color:#C9CEDD}
+.hv-chip{transition:background .15s ease,border-color .15s ease,color .15s ease}
+.hv-chip:hover{border-color:#E0262B}
+.hv-card{transition:transform .2s ease,box-shadow .2s ease}
+.hv-card:hover{transform:translateY(-4px) rotate(-0.6deg);box-shadow:0 14px 30px rgba(29,33,64,.12)}
+.hv-tile{transition:transform .2s ease,box-shadow .2s ease}
+.hv-tile:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(29,33,64,.10)}
+.hv-navgrid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px 12px}
+.hv-navlinks{display:flex;justify-content:center;gap:4px}
+.hv-navcart{justify-self:end}
+.hv-flink{color:#FFFFFF;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;font-weight:700}
+.hv-flink:hover{text-decoration:underline}
+@media (max-width:640px){.hv-navgrid{grid-template-columns:1fr auto;grid-template-areas:"logo cart" "links links"}.hv-navlogo{grid-area:logo}.hv-navcart{grid-area:cart}.hv-navlinks{grid-area:links;padding-bottom:4px}}
+@media (prefers-reduced-motion:reduce){.hv-card:hover,.hv-tile:hover,.hv-btn:hover{transform:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: #FFFFFF; color: #1D2140; font-family: 'Nunito Sans', system-ui, sans-serif; font-size: 16px; line-height: 1.5">
+
+  <header style="position: sticky; top: 0; z-index: 10; background: #E0262B; border-bottom: 5px solid #1D2140">
+    <nav aria-label="Main" class="hv-navgrid" style="max-width: 1200px; margin: 0 auto; padding: 10px clamp(16px, 4vw, 24px)">
+      <button type="button" class="hv-navlogo" onClick="{{goHome}}" aria-label="Holo Vault home" style="justify-self: start; display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 4px 0; color: #FFFFFF; cursor: pointer">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <circle cx="17" cy="17" r="15" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 2.5"></circle>
+          <path d="M2 17a15 15 0 0 1 30 0Z" fill="#FFCB05" stroke="#1D2140" style="stroke-width: 2.5"></path>
+          <path d="M2 17h30" stroke="#1D2140" style="stroke-width: 2.5"></path>
+          <circle cx="17" cy="17" r="5" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 2.5"></circle>
+        </svg>
+        <span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.01em">Holo Vault</span>
+      </button>
+      <div class="hv-navlinks">
+        <button type="button" class="hv-nav" onClick="{{goShop}}" aria-current="{{navShopCurrent}}" style="{{navShopStyle}}">Shop</button>
+        <button type="button" class="hv-nav" onClick="{{goAbout}}" style="{{navPlainStyle}}">About</button>
+        <button type="button" class="hv-nav" onClick="{{goVisit}}" style="{{navPlainStyle}}">Visit Us</button>
+      </div>
+      <div class="hv-navcart">
+        <button type="button" class="hv-nav" onClick="{{goCart}}" aria-current="{{navCartCurrent}}" aria-label="{{cartAria}}" style="{{navCartStyle}}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round">
+            <circle cx="9" cy="20" r="1.5"></circle>
+            <circle cx="18" cy="20" r="1.5"></circle>
+            <path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21.5 7H6"></path>
+          </svg>
+          <span>Cart</span>
+          <sc-if value="{{hasCount}}" hint-placeholder-val="{{ true }}">
+            <span style="min-width: 24px; height: 24px; padding: 0 7px; box-sizing: border-box; border-radius: 12px; background: #FFCB05; color: #1D2140; border: 2px solid #1D2140; font-family: Fredoka, sans-serif; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">{{count}}</span>
+          </sc-if>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main style="flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 40px clamp(16px, 4vw, 24px) 72px">
+
+    <!-- HOME -->
+    <sc-if value="{{isHome}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 72px">
+        <section style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px">
+          <div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+            <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #EAF1FD; color: #1F56AD; font-weight: 700; font-size: 14px">Pokémon TCG singles at market price</span>
+            <h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: clamp(40px, 5.6vw, 68px); line-height: 1.05; color: #1D2140">Catch the cards you <span style="color: {{accent}}">chased.</span></h1>
+            <p style="margin: 0; max-width: 520px; color: #4B5070; font-size: 18px">276 Double Rare and higher singles from 151, Prismatic Evolutions, Surging Sparks and Obsidian Flames, priced from TCGplayer market data.</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px">
+              <button type="button" class="hv-btn" onClick="{{goShop}}" style="height: 52px; padding: 0 26px; border: 2px solid #1D2140; border-radius: 999px; background: {{accent}}; color: #FFFFFF; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px">
+                Start shopping
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              </button>
+              <button type="button" class="hv-btn" onClick="{{goChase}}" style="height: 52px; padding: 0 24px; border: 2px solid #1D2140; border-radius: 999px; background: #FFFFFF; color: #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 18px; cursor: pointer">See top cards</button>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 12px">
+              <span style="padding: 8px 14px; border-radius: 12px; background: #FFF6D1; font-weight: 600; font-size: 14px"><strong style="font-family: Fredoka, sans-serif; font-size: 16px">276</strong> cards</span>
+              <span style="padding: 8px 14px; border-radius: 12px; background: #FDE9EA; font-weight: 600; font-size: 14px"><strong style="font-family: Fredoka, sans-serif; font-size: 16px">4</strong> sets</span>
+              <span style="padding: 8px 14px; border-radius: 12px; background: #EAF1FD; font-weight: 600; font-size: 14px">Prices as of <strong style="font-family: Fredoka, sans-serif; font-size: 16px">22 Oct 2026</strong></span>
+            </div>
+          </div>
+
+          <div style="flex: 1 1 320px; display: flex; justify-content: center; padding: 24px 0">
+            <div style="position: relative; width: 320px; height: 420px">
+              <div aria-hidden="true" style="position: absolute; left: 10px; top: 20px; width: 300px; height: 300px; border-radius: 50%; background: #FFCB05; border: 3px solid #1D2140; overflow: hidden">
+                <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 50%; background: #FFFFFF; border-top: 3px solid #1D2140"></div>
+              </div>
+              <img src="/_blob/aae45c049f680d3051fa7d38ba7c9848" alt="Umbreon ex, Prismatic Evolutions Special Illustration Rare" style="position: absolute; left: 62px; top: 40px; width: 210px; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 12px; border: 3px solid #1D2140; transform: rotate(-4deg); box-shadow: 8px 10px 0 rgba(29,33,64,0.18); background: #F4F5FA">
+              <div style="position: absolute; right: -4px; top: 34px; transform: rotate(8deg); padding: 10px 14px; border-radius: 16px; background: #FFFFFF; border: 3px solid #1D2140; box-shadow: 4px 4px 0 #1D2140; text-align: center">
+                <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #E0262B">Top pull</div>
+                <div style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 22px; line-height: 1.1">$1,215.47</div>
+              </div>
+              <div style="position: absolute; left: 0; bottom: 18px; transform: rotate(-3deg); padding: 8px 14px; border-radius: 12px; background: #2A6FDB; color: #FFFFFF; border: 3px solid #1D2140; font-family: Fredoka, sans-serif; font-weight: 600">Umbreon ex · 161/131</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="chase" style="display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <h2 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 32px">Top cards in the vault</h2>
+              <p style="margin: 0; color: #4B5070">The most valuable pulls we stock right now.</p>
+            </div>
+            <button type="button" class="hv-soft" onClick="{{goShop}}" style="height: 44px; padding: 0 18px; border-radius: 999px; border: 2px solid #E1E4EE; background: #FFFFFF; color: #1D2140; font-weight: 700; cursor: pointer">See all 276 cards</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 20px">
+            <sc-for list="{{chase}}" as="c" hint-placeholder-count="4">
+              <button type="button" class="hv-card" onClick="{{goShop}}" aria-label="{{c.aria}}" style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 20px; border: 2px solid #E1E4EE; background: #FFFFFF; color: inherit; text-align: left; cursor: pointer">
+                <span style="position: absolute; z-index: 1; left: -8px; top: -10px; width: 38px; height: 38px; border-radius: 50%; background: #FFCB05; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center; font-family: Fredoka, sans-serif; font-weight: 700">{{c.rank}}</span>
+                <img src="{{c.img}}" alt="" style="display: block; width: 100%; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 10px; background: #F4F5FA">
+                <span style="font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{c.name}}</span>
+                <span style="margin-top: -10px; font-size: 13px; color: #5B6080">{{c.setName}}</span>
+                <span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 20px; color: #E0262B">{{c.priceText}}</span>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+
+        <section id="about" aria-labelledby="about-title" style="scroll-margin-top: 96px; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+          <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+            <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FDE9EA; color: #B81D22; font-weight: 700; font-size: 14px">About</span>
+            <h2 id="about-title" style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1">A card shop built for collectors</h2>
+            <p style="margin: 0; color: #4B5070; font-size: 17px">Holo Vault sells single cards, so you can skip the packs and go straight for the one you want. Every card is priced from TCGplayer market data, so you always know you are paying what the card is worth.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 8px">
+              <span style="font-weight: 700">Sets we stock</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{setPills}}" as="p" hint-placeholder-count="4">
+                  <button type="button" class="hv-tile" onClick="{{p.open}}" style="{{p.style}}">{{p.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="flex: 1 1 420px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+            <div style="padding: 20px; border-radius: 20px; background: #FFF6D1; display: flex; flex-direction: column; gap: 8px">
+              <span aria-hidden="true" style="width: 44px; height: 44px; border-radius: 50%; background: #FFCB05; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2140" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"></path></svg>
+              </span>
+              <span style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Market priced</span>
+              <span style="color: #4B5070; font-size: 15px">Prices follow TCGplayer market data, not guesswork.</span>
+            </div>
+            <div style="padding: 20px; border-radius: 20px; background: #FDE9EA; display: flex; flex-direction: column; gap: 8px">
+              <span aria-hidden="true" style="width: 44px; height: 44px; border-radius: 50%; background: #E0262B; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"></path></svg>
+              </span>
+              <span style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Only the good stuff</span>
+              <span style="color: #4B5070; font-size: 15px">Double Rare and up, from ex cards to Special Illustration Rares.</span>
+            </div>
+            <div style="padding: 20px; border-radius: 20px; background: #EAF1FD; display: flex; flex-direction: column; gap: 8px">
+              <span aria-hidden="true" style="width: 44px; height: 44px; border-radius: 50%; background: #2A6FDB; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><rect x="4" y="3" width="12" height="16" rx="2"></rect><path d="M8 21h10a2 2 0 0 0 2-2V7"></path></svg>
+              </span>
+              <span style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Fan-favourite sets</span>
+              <span style="color: #4B5070; font-size: 15px">151, Prismatic Evolutions, Surging Sparks and Obsidian Flames.</span>
+            </div>
+            <div style="padding: 20px; border-radius: 20px; background: #F4F5FA; display: flex; flex-direction: column; gap: 8px">
+              <span aria-hidden="true" style="width: 44px; height: 44px; border-radius: 50%; background: #FFFFFF; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2140" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6Z"></path><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg>
+              </span>
+              <span style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 20px">Sleeved and safe</span>
+              <span style="color: #4B5070; font-size: 15px">Every card is sleeved and stored in a rigid top loader, so it reaches you in the same condition it left our case.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </sc-if>
+
+    <!-- SHOP -->
+    <sc-if value="{{isShop}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+          <h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 44px">Shop</h1>
+          <span style="font-size: 14px; font-weight: 600; color: #5B6080">{{shopCountText}}</span>
+        </div>
+        <div role="group" aria-label="Filter by set" style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{chips}}" as="chip" hint-placeholder-count="5">
+            <button type="button" class="hv-chip" onClick="{{chip.pick}}" aria-pressed="{{chip.pressed}}" style="{{chip.style}}">{{chip.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 18px">
+          <sc-for list="{{shopItems}}" as="item" hint-placeholder-count="8">
+            <article class="hv-card" style="display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 20px; border: 2px solid #E1E4EE; background: #FFFFFF">
+              <img src="{{item.img}}" alt="{{item.alt}}" style="display: block; width: 100%; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 10px; background: #F4F5FA">
+              <div style="display: flex; flex-direction: column; gap: 2px; flex: 1">
+                <span style="{{item.rarityStyle}}">{{item.rarity}}</span>
+                <h2 style="margin: 4px 0 0; font-family: Fredoka, sans-serif; font-size: 19px; font-weight: 600; line-height: 1.2">{{item.name}}</h2>
+                <span style="font-size: 13px; color: #5B6080">{{item.setName}} · {{item.number}}</span>
+              </div>
+              <div style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 22px; color: #E0262B">{{item.priceText}}</div>
+              <div style="display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 999px; background: #F4F5FA">
+                <button type="button" class="hv-soft" onClick="{{item.dec}}" disabled="{{item.minDisabled}}" aria-label="{{item.decAria}}" style="width: 40px; height: 40px; flex: none; border-radius: 50%; border: 2px solid #E1E4EE; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3; stroke-linecap: round"><path d="M5 12h14"></path></svg>
+                </button>
+                <input type="text" inputmode="numeric" value="{{item.qty}}" onChange="{{item.onQty}}" onBlur="{{item.onQtyBlur}}" aria-label="{{item.qtyAria}}" style="flex: 1; min-width: 0; height: 40px; box-sizing: border-box; border: 0; border-radius: 10px; background: transparent; color: #1D2140; text-align: center; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 18px">
+                <button type="button" class="hv-soft" onClick="{{item.inc}}" disabled="{{item.maxDisabled}}" aria-label="{{item.incAria}}" style="width: 40px; height: 40px; flex: none; border-radius: 50%; border: 2px solid #E1E4EE; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>
+                </button>
+              </div>
+              <button type="button" class="hv-btn" onClick="{{item.add}}" style="{{item.addStyle}}">{{item.addLabel}}</button>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- CART -->
+    <sc-if value="{{isCart}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <h1 style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 44px">Your cart</h1>
+
+        <sc-if value="{{cartEmpty}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 56px 24px; border-radius: 24px; background: #F4F5FA; text-align: center">
+            <svg width="72" height="72" viewBox="0 0 34 34" aria-hidden="true">
+              <circle cx="17" cy="17" r="15" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 2"></circle>
+              <path d="M2 17a15 15 0 0 1 30 0Z" fill="#E0262B" stroke="#1D2140" style="stroke-width: 2"></path>
+              <path d="M2 17h30" stroke="#1D2140" style="stroke-width: 2"></path>
+              <circle cx="17" cy="17" r="5" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 2"></circle>
+            </svg>
+            <p style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 26px">Your cart is empty</p>
+            <p style="margin: 0; color: #4B5070">No cards caught yet. Head to the shop to find one.</p>
+            <button type="button" class="hv-btn" onClick="{{goShop}}" style="height: 52px; padding: 0 26px; border: 2px solid #1D2140; border-radius: 999px; background: {{accent}}; color: #FFFFFF; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 18px; cursor: pointer">Go to the shop</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{cartHasItems}}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px">
+            <ul style="flex: 999 1 560px; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px">
+              <sc-for list="{{cartItems}}" as="row" hint-placeholder-count="2">
+                <li style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 14px 16px; border-radius: 20px; border: 2px solid #E1E4EE; background: #FFFFFF">
+                  <img src="{{row.img}}" alt="" style="width: 64px; aspect-ratio: 287 / 400; object-fit: cover; border-radius: 8px; flex: none; background: #F4F5FA">
+                  <div style="flex: 1 1 180px; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-family: Fredoka, sans-serif; font-weight: 600; font-size: 18px">{{row.name}}</span>
+                    <span style="font-size: 13px; color: #5B6080">{{row.setName}} · {{row.number}}</span>
+                    <span style="font-size: 13px; color: #5B6080">{{row.priceText}} each</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px; width: 156px; padding: 4px; box-sizing: border-box; border-radius: 999px; background: #F4F5FA">
+                    <button type="button" class="hv-soft" onClick="{{row.dec}}" disabled="{{row.minDisabled}}" aria-label="{{row.decAria}}" style="width: 40px; height: 40px; flex: none; border-radius: 50%; border: 2px solid #E1E4EE; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3; stroke-linecap: round"><path d="M5 12h14"></path></svg>
+                    </button>
+                    <input type="text" inputmode="numeric" value="{{row.qty}}" onChange="{{row.onQty}}" onBlur="{{row.onQtyBlur}}" aria-label="{{row.qtyAria}}" style="flex: 1; min-width: 0; height: 40px; box-sizing: border-box; border: 0; border-radius: 10px; background: transparent; color: #1D2140; text-align: center; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 18px">
+                    <button type="button" class="hv-soft" onClick="{{row.inc}}" disabled="{{row.maxDisabled}}" aria-label="{{row.incAria}}" style="width: 40px; height: 40px; flex: none; border-radius: 50%; border: 2px solid #E1E4EE; background: #FFFFFF; color: #1D2140; cursor: pointer; display: flex; align-items: center; justify-content: center">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 3; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg>
+                    </button>
+                  </div>
+                  <div style="width: 110px; text-align: right; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 20px; color: #E0262B">{{row.lineText}}</div>
+                  <button type="button" class="hv-soft" onClick="{{row.remove}}" aria-label="{{row.removeAria}}" style="height: 44px; padding: 0 14px; border: 2px solid transparent; border-radius: 999px; background: none; color: #4B5070; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true" style="stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg>
+                    Remove
+                  </button>
+                </li>
+              </sc-for>
+            </ul>
+            <aside aria-label="Order summary" style="flex: 1 1 300px; box-sizing: border-box; border-radius: 20px; border: 2px solid #1D2140; background: #FFFFFF; overflow: hidden; box-shadow: 6px 6px 0 #FFCB05">
+              <h2 style="margin: 0; padding: 14px 20px; background: #2A6FDB; color: #FFFFFF; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 22px; border-bottom: 2px solid #1D2140">Summary</h2>
+              <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+                <div style="display: flex; justify-content: space-between; font-weight: 600"><span>Items</span><span>{{count}}</span></div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 14px; border-top: 2px dashed #E1E4EE"><span style="font-weight: 700">Subtotal</span><span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 28px; color: #E0262B">{{subtotalText}}</span></div>
+                <p style="margin: 0; font-size: 13px; color: #5B6080">Checkout isn't part of this demo store.</p>
+                <button type="button" class="hv-btn" onClick="{{goShop}}" style="height: 48px; border-radius: 999px; border: 2px solid #1D2140; background: #FFFFFF; color: #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 17px; cursor: pointer">Continue shopping</button>
+              </div>
+            </aside>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+  </main>
+
+  <section id="visit" aria-labelledby="visit-title" style="scroll-margin-top: 80px; background: #EAF1FD; border-top: 3px solid #1D2140">
+    <div style="max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 56px clamp(16px, 4vw, 24px); display: flex; flex-wrap: wrap; gap: 40px; align-items: center">
+      <div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+        <span style="align-self: flex-start; padding: 6px 14px; border-radius: 999px; background: #FFFFFF; color: #1F56AD; font-weight: 700; font-size: 14px">Visit us</span>
+        <h2 id="visit-title" style="margin: 0; font-family: Fredoka, sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1">See the cards in person</h2>
+        <p style="margin: 0; color: #4B5070; font-size: 17px">Drop by the shop to check a card up close before you buy.</p>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; gap: 12px; align-items: flex-start">
+            <span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #E0262B; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+            </span>
+            <div style="display: flex; flex-direction: column"><strong>Address</strong><span style="color: #4B5070">8 Granite Way, Rustboro City<br>Hoenn Region</span></div>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start">
+            <span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #FFCB05; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D2140" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+            </span>
+            <div style="display: flex; flex-direction: column; flex: 1; max-width: 300px"><strong>Opening hours</strong>
+              <span style="display: flex; justify-content: space-between; gap: 16px; color: #4B5070"><span>Open daily</span><span>11:00 am – 9:00 pm</span></span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start">
+            <span aria-hidden="true" style="flex: none; width: 40px; height: 40px; border-radius: 50%; background: #2A6FDB; border: 2px solid #1D2140; display: flex; align-items: center; justify-content: center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+            </span>
+            <div style="display: flex; flex-direction: column"><strong>Contact</strong><span style="color: #4B5070">pietro_o@pokemail.com<br>(0151) 555 0384</span></div>
+          </div>
+        </div>
+      </div>
+      <div role="img" aria-label="Map showing the Holo Vault shop location" style="flex: 1 1 380px; min-width: 0; height: 340px; position: relative; overflow: hidden; border-radius: 24px; border: 3px solid #1D2140; background: #F3F6FB; box-shadow: 6px 6px 0 #FFCB05">
+        <div style="position: absolute; left: 0; right: 0; top: 38%; height: 26px; background: #FFFFFF; border-top: 2px solid #D9DFEC; border-bottom: 2px solid #D9DFEC"></div>
+        <div style="position: absolute; top: 0; bottom: 0; left: 30%; width: 22px; background: #FFFFFF; border-left: 2px solid #D9DFEC; border-right: 2px solid #D9DFEC"></div>
+        <div style="position: absolute; top: 0; bottom: 0; left: 72%; width: 16px; background: #FFFFFF; border-left: 2px solid #D9DFEC; border-right: 2px solid #D9DFEC"></div>
+        <div style="position: absolute; left: -10%; right: -10%; top: 78%; height: 40px; background: #BFD5F7; transform: rotate(-6deg)"></div>
+        <div style="position: absolute; left: 6%; top: 8%; width: 18%; height: 22%; border-radius: 14px; background: #DDEFD9"></div>
+        <div style="position: absolute; left: 40%; top: 10%; width: 26%; height: 20%; border-radius: 10px; background: #E6E9F2"></div>
+        <div style="position: absolute; left: 78%; top: 52%; width: 16%; height: 18%; border-radius: 10px; background: #E6E9F2"></div>
+        <div style="position: absolute; left: 36%; top: 50%; width: 30%; height: 20%; border-radius: 10px; background: #E6E9F2"></div>
+        <div style="position: absolute; left: 50%; top: 40%; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; gap: 4px">
+          <span style="padding: 6px 12px; border-radius: 12px; background: #FFFFFF; border: 2px solid #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; white-space: nowrap">Holo Vault</span>
+          <svg width="40" height="48" viewBox="0 0 40 48" aria-hidden="true">
+            <path d="M20 46s-16-14-16-26a16 16 0 0 1 32 0c0 12-16 26-16 26Z" fill="#E0262B" stroke="#1D2140" style="stroke-width: 2.5"></path>
+            <circle cx="20" cy="20" r="6" fill="#FFFFFF" stroke="#1D2140" style="stroke-width: 2.5"></circle>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: #1D2140; color: #D5D8E8">
+    <div style="max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 32px clamp(16px, 4vw, 24px) 24px; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+        <span style="font-family: Fredoka, sans-serif; font-weight: 700; font-size: 22px; color: #FFFFFF">Holo Vault</span>
+        <nav aria-label="Footer" style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+          <button type="button" class="hv-flink" onClick="{{goShop}}">Shop</button>
+          <button type="button" class="hv-flink" onClick="{{goAbout}}">About</button>
+          <button type="button" class="hv-flink" onClick="{{goVisit}}">Visit Us</button>
+          <button type="button" class="hv-flink" onClick="{{goCart}}">Cart</button>
+        </nav>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 16px; border-top: 1px solid #3A3F63; font-size: 13px">
+        <span>Prices: TCGplayer market data via tcgapi.dev, as of 22 Oct 2026.</span>
+        <span>Fan project. Not affiliated with Nintendo, Creatures, GAME FREAK or The Pokémon Company.</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E0262B","options":["#E0262B","#C81E24","#2A6FDB"]},"$preview":{"width":1440,"height":1760}}'>
+var SETS = [
+  { slug: '151', name: '151', count: 55, top: 'Charizard ex', topPrice: 305.79, img: '/_blob/de47ca13d3f1840e73cdcb7490a78545', bg: '#FDE9EA' },
+  { slug: 'prismatic-evolutions', name: 'Prismatic Evolutions', count: 80, top: 'Umbreon ex', topPrice: 1215.47, img: '/_blob/aae45c049f680d3051fa7d38ba7c9848', bg: '#EAF1FD' },
+  { slug: 'surging-sparks', name: 'Surging Sparks', count: 87, top: 'Pikachu ex', topPrice: 258.11, img: '/_blob/d210554509d2b62a9d831fbc86d2c50d', bg: '#FFF6D1' },
+  { slug: 'obsidian-flames', name: 'Obsidian Flames', count: 54, top: 'Charizard ex', topPrice: 89.11, img: '/_blob/84bb6346adb6b2bbff134d0de3e111d1', bg: '#F4F5FA' }
+];
+
+var CARDS = [
+  { id: 13440, name: 'Umbreon ex', number: '161/131', rarity: 'Special Illustration Rare', set: 'prismatic-evolutions', price: 1215.47, img: '/_blob/aae45c049f680d3051fa7d38ba7c9848' },
+  { id: 13471, name: 'Sylveon ex', number: '156/131', rarity: 'Special Illustration Rare', set: 'prismatic-evolutions', price: 412.75, img: '/_blob/c4391dcd8a35e9858ed948d74bd33ba3' },
+  { id: 21898, name: 'Charizard ex', number: '199/165', rarity: 'Special Illustration Rare', set: '151', price: 305.79, img: '/_blob/de47ca13d3f1840e73cdcb7490a78545' },
+  { id: 13465, name: 'Espeon ex', number: '155/131', rarity: 'Special Illustration Rare', set: 'prismatic-evolutions', price: 276.32, img: '/_blob/ee54594641f63c219d446f38e8239229' },
+  { id: 18189, name: 'Pikachu ex', number: '238/191', rarity: 'Special Illustration Rare', set: 'surging-sparks', price: 258.11, img: '/_blob/d210554509d2b62a9d831fbc86d2c50d' },
+  { id: 18183, name: 'Latias ex', number: '239/191', rarity: 'Special Illustration Rare', set: 'surging-sparks', price: 173.57, img: '/_blob/7760d5de8dcb4c7baee1591a4bd10cdf' },
+  { id: 21888, name: 'Blastoise ex', number: '200/165', rarity: 'Special Illustration Rare', set: '151', price: 108.89, img: '/_blob/e1f1bca9b80ec09955eb183edfabfcca' },
+  { id: 20463, name: 'Charizard ex', number: '223/197', rarity: 'Special Illustration Rare', set: 'obsidian-flames', price: 89.11, img: '/_blob/84bb6346adb6b2bbff134d0de3e111d1' },
+  { id: 21895, name: 'Squirtle', number: '170/165', rarity: 'Illustration Rare', set: '151', price: 87.43, img: '/_blob/fc3c782289d20a81739f8f2bae5c7fe7' },
+  { id: 20434, name: 'Cleffa', number: '202/197', rarity: 'Illustration Rare', set: 'obsidian-flames', price: 35.22, img: '/_blob/4bc517f9c1b28576f3f0925a94fc72dc' },
+  { id: 17936, name: 'Latias ex', number: '076/191', rarity: 'Double Rare', set: 'surging-sparks', price: 5.64, img: '/_blob/cb19231b2450b71c1ab2d9c8bbbbaff4' },
+  { id: 20439, name: 'Dragonite ex', number: '159/197', rarity: 'Double Rare', set: 'obsidian-flames', price: 3.51, img: '/_blob/cc1a13e7805541da2cc5b5d22658a9d6' }
+];
+
+// Badge colours per rarity: background, text.
+var RARITY_COLORS = {
+  'Special Illustration Rare': ['#FFCB05', '#1D2140'],
+  'Illustration Rare': ['#EAF1FD', '#1F56AD'],
+  'Double Rare': ['#FDE9EA', '#B81D22']
+};
+
+var MAX_QTY = 99;
+
+function setName(slug) {
+  for (var i = 0; i < SETS.length; i++) if (SETS[i].slug === slug) return SETS[i].name;
+  return slug;
+}
+
+function money(n) {
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function clamp(value) {
+  var n = parseInt(value, 10);
+  if (isNaN(n) || n < 1) return 1;
+  return Math.min(n, MAX_QTY);
+}
+
+function digitsOnly(value) {
+  return String(value).replace(/[^0-9]/g, '').slice(0, 2);
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { page: 'home', filter: 'all', drafts: {}, cart: { 13440: 1, 18189: 2 }, added: null };
+  }
+
+  go(page) {
+    this.setState({ page: page });
+  }
+
+  setDraft(id, value) {
+    var drafts = Object.assign({}, this.state.drafts);
+    drafts[id] = value;
+    this.setState({ drafts: drafts });
+  }
+
+  setCartQty(id, value) {
+    var cart = Object.assign({}, this.state.cart);
+    cart[id] = value;
+    this.setState({ cart: cart });
+  }
+
+  addToCart(id) {
+    var qty = clamp(this.state.drafts[id] ?? 1);
+    var cart = Object.assign({}, this.state.cart);
+    cart[id] = Math.min((Number(cart[id]) || 0) + qty, MAX_QTY);
+    var drafts = Object.assign({}, this.state.drafts);
+    drafts[id] = 1;
+    this.setState({ cart: cart, drafts: drafts, added: id });
+    clearTimeout(this.addedTimer);
+    this.addedTimer = setTimeout(() => this.setState({ added: null }), 1200);
+  }
+
+  removeFromCart(id) {
+    var cart = Object.assign({}, this.state.cart);
+    delete cart[id];
+    this.setState({ cart: cart });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.addedTimer);
+  }
+
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var accent = this.props.accent ?? '#E0262B';
+
+    function navStyle(active) {
+      return 'height: 44px; padding: 0 16px; border-radius: 999px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; ' +
+        (active ? 'background: #FFFFFF; color: #B81D22;' : 'background: none; color: #FFFFFF;');
+    }
+
+    function rarityStyle(rarity) {
+      var c = RARITY_COLORS[rarity] || ['#F4F5FA', '#1D2140'];
+      return 'align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: ' + c[0] + '; color: ' + c[1] + '; font-size: 11px; font-weight: 700; letter-spacing: 0.02em';
+    }
+
+    var cartIds = Object.keys(s.cart);
+    var count = 0;
+    var subtotal = 0;
+    var cartItems = CARDS.filter(function (c) { return s.cart[c.id] !== undefined; }).map(function (c) {
+      var raw = s.cart[c.id];
+      var qty = clamp(raw);
+      count += qty;
+      subtotal += qty * c.price;
+      return {
+        img: c.img, name: c.name, number: c.number, setName: setName(c.set),
+        priceText: money(c.price),
+        lineText: money(qty * c.price),
+        qty: raw,
+        minDisabled: qty <= 1,
+        maxDisabled: qty >= MAX_QTY,
+        qtyAria: 'Quantity of ' + c.name + ' in cart',
+        decAria: 'Decrease ' + c.name + ' quantity',
+        incAria: 'Increase ' + c.name + ' quantity',
+        removeAria: 'Remove ' + c.name + ' from cart',
+        dec: function () { self.setCartQty(c.id, Math.max(1, qty - 1)); },
+        inc: function () { self.setCartQty(c.id, Math.min(MAX_QTY, qty + 1)); },
+        onQty: function (e) { self.setCartQty(c.id, digitsOnly(e.target.value)); },
+        onQtyBlur: function () { self.setCartQty(c.id, clamp(s.cart[c.id])); },
+        remove: function () { self.removeFromCart(c.id); }
+      };
+    });
+
+    var visible = CARDS.filter(function (c) { return s.filter === 'all' || c.set === s.filter; });
+    var shopItems = visible.map(function (c) {
+      var raw = s.drafts[c.id] ?? 1;
+      var qty = clamp(raw);
+      var justAdded = s.added === c.id;
+      return {
+        img: c.img, name: c.name, number: c.number, rarity: c.rarity, setName: setName(c.set),
+        alt: c.name + ', ' + setName(c.set) + ' ' + c.rarity,
+        priceText: money(c.price),
+        rarityStyle: rarityStyle(c.rarity),
+        qty: raw,
+        minDisabled: qty <= 1,
+        maxDisabled: qty >= MAX_QTY,
+        qtyAria: 'Quantity of ' + c.name,
+        decAria: 'Decrease ' + c.name + ' quantity',
+        incAria: 'Increase ' + c.name + ' quantity',
+        dec: function () { self.setDraft(c.id, Math.max(1, qty - 1)); },
+        inc: function () { self.setDraft(c.id, Math.min(MAX_QTY, qty + 1)); },
+        onQty: function (e) { self.setDraft(c.id, digitsOnly(e.target.value)); },
+        onQtyBlur: function () { self.setDraft(c.id, clamp(s.drafts[c.id] ?? 1)); },
+        add: function () { self.addToCart(c.id); },
+        addLabel: justAdded ? 'Added to cart ✓' : 'Add to cart',
+        addStyle: 'height: 46px; border-radius: 999px; border: 2px solid #1D2140; font-family: Fredoka, sans-serif; font-weight: 600; font-size: 16px; cursor: pointer; color: #FFFFFF; ' +
+          'background: ' + (justAdded ? '#2A6FDB' : accent) + ';'
+      };
+    });
+
+    var chipDefs = [{ slug: 'all', label: 'All sets' }].concat(SETS.map(function (x) { return { slug: x.slug, label: x.name }; }));
+    var chips = chipDefs.map(function (d) {
+      var active = s.filter === d.slug;
+      return {
+        label: d.label,
+        pressed: active ? 'true' : 'false',
+        pick: function () { self.setState({ filter: d.slug }); },
+        style: 'height: 42px; padding: 0 18px; border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 15px; ' +
+          (active ? 'background: ' + accent + '; color: #FFFFFF; border: 2px solid #1D2140;' : 'background: #FFFFFF; color: #1D2140; border: 2px solid #E1E4EE;')
+      };
+    });
+
+    var setPills = SETS.map(function (x) {
+      return {
+        label: x.name + ' · ' + x.count,
+        style: 'height: 44px; padding: 0 16px; border-radius: 999px; border: 2px solid #1D2140; background: ' + x.bg + '; color: #1D2140; font-weight: 700; cursor: pointer',
+        open: function () { self.setState({ page: 'shop', filter: x.slug }); window.scrollTo({ top: 0 }); }
+      };
+    });
+
+    function scrollTo(id) {
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    var chase = CARDS.slice(1, 5).map(function (c, i) {
+      return { rank: i + 1, img: c.img, name: c.name, setName: setName(c.set), priceText: money(c.price), aria: c.name + ', ' + setName(c.set) + ', ' + money(c.price) };
+    });
+
+    return {
+      accent: accent,
+      isHome: s.page === 'home',
+      isShop: s.page === 'shop',
+      isCart: s.page === 'cart',
+      goHome: function () { self.go('home'); },
+      goShop: function () { self.go('shop'); },
+      goCart: function () { self.go('cart'); },
+      goChase: function () { scrollTo('chase'); },
+      goAbout: function () { self.setState({ page: 'home' }, function () { requestAnimationFrame(function () { scrollTo('about'); }); }); },
+      goVisit: function () { scrollTo('visit'); },
+      navPlainStyle: navStyle(false),
+      navShopStyle: navStyle(s.page === 'shop'),
+      navCartStyle: navStyle(s.page === 'cart'),
+      navShopCurrent: s.page === 'shop' ? 'page' : 'false',
+      navCartCurrent: s.page === 'cart' ? 'page' : 'false',
+      count: count,
+      hasCount: count > 0,
+      cartAria: 'Cart, ' + count + (count === 1 ? ' item' : ' items'),
+      cartItems: cartItems,
+      cartEmpty: cartIds.length === 0,
+      cartHasItems: cartIds.length > 0,
+      subtotalText: money(subtotal),
+      shopItems: shopItems,
+      shopCountText: 'Showing ' + visible.length + ' of 276 cards in this mockup',
+      chips: chips,
+      setPills: setPills,
+      chase: chase
+    };
+  }
+}
+</script>
+</body>
+</html>
