@@ -15,7 +15,9 @@
   --text: var(--ink);
   --text-soft: #4b5070;
   --text-muted: #5b6080;
-  --text-on-red: #ffe9ea;
+  /* White is the only light text that passes 4.5:1 on --red (4.65:1); the
+     softer #ffe9ea it replaced measured 4.03:1 */
+  --text-on-red: #ffffff;
 
   /* Light tints and lines */
   --tint-red: #fde9ea;

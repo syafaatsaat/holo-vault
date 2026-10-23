@@ -3,6 +3,9 @@
   z-index: 3;
   height: 52px;
   margin-bottom: -52px;
+  /* the slices overhang the right edge by a hair; clip sideways only, so the
+     peeled strip can still fall down past the seal */
+  overflow-x: clip;
 }
 
 .strip {

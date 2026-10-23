@@ -10,7 +10,7 @@ export default function Navbar() {
   const { itemCount } = useCart()
   const { pathname } = useLocation()
   const compact = useScrolled()
-  const cartLabel = `Cart, ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`
+  const itemText = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`
   const linkClass = ({ isActive }) => `${styles.link} ${isActive ? styles.current : ''}`
 
   return (
@@ -36,17 +36,16 @@ export default function Navbar() {
             </Link>
           </li>
         </ul>
-        <NavLink
-          to="/cart"
-          aria-label={cartLabel}
-          className={({ isActive }) => `${styles.cart} ${isActive ? styles.cartCurrent : ''}`}
-        >
+        {/* Named "Cart, 3 items" from its own text (no aria-label), so the name
+            starts with the visible word "Cart" for voice-control users */}
+        <NavLink to="/cart" className={({ isActive }) => `${styles.cart} ${isActive ? styles.cartCurrent : ''}`}>
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <circle cx="9" cy="20" r="1.5" />
             <circle cx="18" cy="20" r="1.5" />
             <path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21.5 7H6" />
           </svg>
           Cart
+          <span className="visually-hidden">, {itemText}</span>
           {itemCount > 0 && (
             <span className={styles.badge} aria-hidden="true">
               {itemCount}
