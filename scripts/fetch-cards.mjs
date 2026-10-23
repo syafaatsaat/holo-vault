@@ -2,6 +2,7 @@
 // static snapshot in src/data/cards.json. Run with: npm run fetch-cards
 // Needs TCG_API_KEY in .env. Each run costs roughly 13 of the 100 free daily requests.
 import { writeFile, mkdir } from 'node:fs/promises';
+import { cleanCardName } from './card-name.mjs';
 
 process.loadEnvFile();
 const API_KEY = process.env.TCG_API_KEY;
@@ -44,8 +45,7 @@ async function fetchSet(set) {
 function toCard(product, set) {
   return {
     id: product.id,
-    // Names come as "Charizard ex - 006/165"; the number is stored separately.
-    name: product.name.replace(/\s+-\s+\S+\/\S+$/, ''),
+    name: cleanCardName(product.name),
     number: product.number,
     rarity: product.rarity,
     set: set.slug,
