@@ -51,11 +51,21 @@
    the full-width two-row layout set at the end of this file.) */
 @media (min-width: 641px) {
   .compact .nav {
-    grid-template-columns: auto auto auto;
+    /* Equal side columns (each as wide as the Cart button) keep the links in the
+       middle of the bar even though the logo is much narrower than Cart */
+    grid-template-columns: 1fr auto 1fr;
     /* room on both sides of the links, between the logo and the Cart button */
     column-gap: 56px;
     width: fit-content;
+    padding-left: 8px;
     padding-right: 8px;
+  }
+
+  /* Three equal-width links, so the middle one (About) sits at the bar's centre */
+  .compact .links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
   }
 }
 
