@@ -1,0 +1,41 @@
+.footer {
+  background: var(--red);
+  color: var(--white);
+}
+
+.top,
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 24px var(--gutter);
+}
+
+.bottom {
+  border-top: 2px solid var(--red-dark);
+  font-size: 13px;
+  color: var(--text-on-red);
+}
+
+.brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.links a {
+  color: var(--white);
+  font-weight: 700;
+}

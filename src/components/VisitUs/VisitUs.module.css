@@ -1,0 +1,27 @@
+.section {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 72px var(--gutter);
+  scroll-margin-top: var(--nav-offset);
+}
+
+.eyebrow {
+  font-weight: 700;
+  color: var(--red-dark);
+}
+
+.details {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0 0;
+}
+
+.details dt {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.details dd {
+  margin: 0;
+  color: var(--text-soft);
+}
