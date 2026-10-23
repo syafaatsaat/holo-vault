@@ -105,6 +105,11 @@
   box-shadow: 8px 8px 0 var(--ink);
   opacity: 0;
   transform: translateY(-90px);
+  /* Tilted, animated cards get their own layer, and Chrome doesn't smooth a
+     layer's outer edge. A transparent outline moves that edge 1px outside the
+     border, so the visible border is smoothed like any other drawing. */
+  outline: 1px solid transparent;
+  backface-visibility: hidden;
 }
 
 .card:nth-child(even) {

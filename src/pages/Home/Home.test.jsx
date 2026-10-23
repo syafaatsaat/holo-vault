@@ -1,5 +1,5 @@
 import { act, screen, within } from '@testing-library/react'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { renderRoute } from '../../../test/renderRoute.jsx'
 import { CARDS, SETS, countCardsInSet, getTopCards } from '../../lib/cards.js'
 import { formatPrice } from '../../lib/format.js'
@@ -10,6 +10,7 @@ const topCardItems = () => within(within(topCardsSection()).getByRole('list')).g
 
 afterEach(() => {
   window.matchMedia = originalMatchMedia
+  vi.restoreAllMocks()
 })
 
 describe('Home page', () => {
@@ -71,15 +72,22 @@ describe('top cards', () => {
 })
 
 describe('opening the pack', () => {
+  // jsdom has no layout; place every element (including the seal) far below the screen.
+  const placeEverythingAt = (top) =>
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({ top, left: 0, right: 0, bottom: 0 })
+
   it('keeps the top cards in the page before the pack opens', () => {
+    placeEverythingAt(5000)
     renderRoute('/')
     expect(topCardsSection()).toHaveAttribute('data-state', 'closed')
     expect(topCardItems()).toHaveLength(5)
   })
 
   it('opens once the seal scrolls into view', () => {
+    const rect = placeEverythingAt(5000)
     renderRoute('/')
-    act(() => IntersectionObserver.instances.at(-1).trigger(true))
+    rect.mockReturnValue({ top: 200, left: 0, right: 0, bottom: 0 })
+    act(() => window.dispatchEvent(new Event('scroll')))
     expect(topCardsSection()).toHaveAttribute('data-state', 'open')
   })
 

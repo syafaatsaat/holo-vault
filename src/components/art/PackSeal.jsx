@@ -1,7 +1,8 @@
 import { CrimpStrip } from './CrimpEdge.jsx'
 import styles from './PackSeal.module.css'
 
-const SLICES = 60
+// Enough slices for a smooth curl, few enough to stay light to animate.
+const SLICES = 36
 
 // The seal at the bottom of the home page's pack. While closed it looks like a
 // normal crimped edge. When `open` turns true it peels away like foil: the strip

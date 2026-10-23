@@ -15,6 +15,7 @@
 }
 
 .slice {
+  position: relative;
   flex: 1 1 0;
   min-width: 0;
   /* a hair of overlap hides seams between slices */
@@ -29,29 +30,52 @@
   margin-left: calc(-100% * var(--i));
 }
 
+/* Shading as the foil turns away. Fading a dark overlay is cheap for the GPU,
+   unlike animating a brightness filter on every slice. */
+.slice::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  opacity: 0;
+}
+
+/* Only animate transform and opacity, which the GPU handles without repainting.
+   The slices are spread over ~0.8s so the curl travels left to right. */
 .open .slice {
+  will-change: transform, opacity;
   animation: peel 0.95s cubic-bezier(0.4, 0, 0.6, 1) forwards;
-  animation-delay: calc(var(--i) * 14ms);
+  animation-delay: calc(var(--i) * 23ms);
+}
+
+.open .slice::after {
+  animation: shade 0.95s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+  animation-delay: calc(var(--i) * 23ms);
 }
 
 @keyframes peel {
   0% {
     transform: none;
-    filter: brightness(1);
   }
   30% {
     transform: rotateX(-70deg);
-    filter: brightness(0.82);
   }
   60% {
     transform: translate(12px, 70px) rotateX(-115deg);
-    filter: brightness(0.7);
     opacity: 1;
   }
   100% {
     transform: translate(40px, 300px) rotateX(-160deg);
-    filter: brightness(0.6);
     opacity: 0;
+  }
+}
+
+@keyframes shade {
+  30% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0.4;
   }
 }
 

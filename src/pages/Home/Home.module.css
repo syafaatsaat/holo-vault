@@ -19,6 +19,8 @@
   position: absolute;
   color: var(--white);
   animation: spin 60s linear infinite;
+  /* own GPU layer, so spinning never repaints the page behind it */
+  will-change: transform;
 }
 
 .ballOne {
