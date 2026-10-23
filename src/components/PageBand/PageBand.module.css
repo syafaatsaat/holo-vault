@@ -54,13 +54,6 @@
   padding: 132px var(--gutter) 72px;
 }
 
-/* The navbar wraps onto two rows on phones */
-@media (max-width: 640px) {
-  .content {
-    padding-top: 168px;
-  }
-}
-
 .eyebrow {
   align-self: flex-start;
   padding: 6px 14px;

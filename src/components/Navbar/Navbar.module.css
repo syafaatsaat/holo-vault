@@ -134,8 +134,15 @@
   transform: rotate(-2deg);
 }
 
-.cart {
+/* Cart, plus the burger on phones */
+.actions {
   justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -180,23 +187,77 @@
   transform: rotate(10deg);
 }
 
+/* Burger button: only shown on phones */
+.burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: var(--outline);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.18s ease;
+}
+
+.burger:hover {
+  transform: scale(1.04) rotate(-2deg);
+}
+
+.menuOpen .burger {
+  background: var(--yellow);
+}
+
+/* Phones: one row (logo | Cart + burger), with the page links in a drop-down
+   sticker panel under the bar */
 @media (max-width: 640px) {
   .nav {
+    position: relative;
     grid-template-columns: 1fr auto;
-    grid-template-areas:
-      'logo cart'
-      'links links';
   }
 
-  .logo {
-    grid-area: logo;
-  }
-
-  .cart {
-    grid-area: cart;
+  .burger {
+    display: flex;
   }
 
   .links {
-    grid-area: links;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 12px;
+    right: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    border: var(--outline);
+    border-radius: 22px;
+    background: var(--white);
+    box-shadow: var(--sticker-shadow);
+  }
+
+  .menuOpen .links {
+    display: flex;
+  }
+
+  .links .link,
+  .links .link:hover {
+    width: 100%;
+    height: 50px;
+    padding: 0 18px;
+    color: var(--ink);
+    font-size: 18px;
+  }
+
+  .links .link:hover {
+    background-color: var(--tint-yellow);
+  }
+
+  .links .current,
+  .links .current:hover {
+    background-color: var(--yellow);
+    transform: none;
   }
 }
