@@ -208,14 +208,20 @@
   background: var(--yellow);
 }
 
-/* Phones: logo, burger and Cart snug together in the middle of one row, with
-   the page links in a drop-down sticker panel centred under the bar */
+/* Phones: one row with the burger in the middle. At the top of the page the
+   logo, burger and Cart spread across the bar; once scrolled, they snug
+   together in the centred glass bar. The page links sit in a drop-down sticker
+   panel centred under the bar. */
 @media (max-width: 640px) {
   .nav {
     position: relative;
+    grid-template-columns: 1fr auto 1fr;
+    column-gap: 12px;
+  }
+
+  .compact .nav {
     grid-template-columns: auto auto auto;
     justify-content: center;
-    column-gap: 12px;
     width: fit-content;
   }
 
@@ -224,7 +230,7 @@
     display: flex;
   }
 
-  .cart {
+  .compact .cart {
     justify-self: start;
   }
 
