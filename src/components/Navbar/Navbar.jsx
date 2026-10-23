@@ -94,7 +94,8 @@ export default function Navbar() {
             <circle cx="18" cy="20" r="1.5" />
             <path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21.5 7H6" />
           </svg>
-          Cart
+          {/* Hidden visually on phones (icon only), but still read out */}
+          <span className={styles.cartLabel}>Cart</span>
           <span className="visually-hidden">, {itemText}</span>
           {itemCount > 0 && (
             <span className={styles.badge} aria-hidden="true">

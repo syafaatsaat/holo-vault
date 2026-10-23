@@ -234,6 +234,23 @@
     justify-self: start;
   }
 
+  /* Icon-only Cart: a round button like the burger. The word stays in the
+     accessible name ("Cart, 3 items"), just not on screen. */
+  .cart {
+    justify-content: center;
+    width: 48px;
+    padding: 0;
+  }
+
+  .cartLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
   .links {
     /* out of the grid, so it's placed against the whole bar, not a column */
     grid-column: auto;
