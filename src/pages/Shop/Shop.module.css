@@ -1,0 +1,242 @@
+.shop {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Toolbar: search fills the row, sort sits beside it, set filters below */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.searchRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.search {
+  position: relative;
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.searchIcon,
+.sortIcon {
+  position: absolute;
+  top: 50%;
+  color: var(--ink);
+  pointer-events: none;
+  transform: translateY(-60%);
+}
+
+.searchIcon {
+  left: 20px;
+}
+
+.searchInput,
+.sortSelect {
+  height: 58px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: var(--sticker-shadow);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0 60px 0 54px;
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchInput:focus,
+.sortSelect:focus {
+  outline: none;
+  box-shadow:
+    var(--sticker-shadow),
+    0 0 0 4px var(--yellow);
+}
+
+.clear {
+  position: absolute;
+  top: 50%;
+  right: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transform: translateY(-60%);
+}
+
+.clear:hover {
+  background: var(--tint-yellow);
+}
+
+.sort {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.sortSelect {
+  appearance: none;
+  padding: 0 52px 0 22px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sortIcon {
+  right: 20px;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.sets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.setButton {
+  height: 44px;
+  padding: 0 18px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--ink);
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--ink);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.setButton:hover {
+  transform: translateY(-3px) rotate(-1deg);
+  box-shadow: 0 6px 0 var(--ink);
+}
+
+.setButton[aria-pressed='true'] {
+  background: var(--red);
+  color: var(--white);
+}
+
+.count {
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
+/* Grid of product cards */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* min-width: 0 lets cells shrink to their column instead of their content's width */
+.grid > li {
+  display: flex;
+  min-width: 0;
+}
+
+.grid > li > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding-top: 8px;
+}
+
+.shownCount {
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
+.primaryButton {
+  height: 54px;
+  padding: 0 28px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 19px;
+  cursor: pointer;
+  box-shadow: var(--sticker-shadow);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primaryButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 var(--ink);
+}
+
+/* No results */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 36px 28px;
+  border: var(--outline);
+  border-radius: 28px;
+  background: var(--white);
+  text-align: center;
+  box-shadow: 0 6px 0 var(--ink);
+}
+
+.emptyBall {
+  width: 64px;
+  height: 64px;
+}
+
+.emptyTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.emptyText {
+  color: var(--text-soft);
+  font-size: 17px;
+}
