@@ -52,7 +52,8 @@
 @media (min-width: 641px) {
   .compact .nav {
     grid-template-columns: auto auto auto;
-    column-gap: 20px;
+    /* room on both sides of the links, between the logo and the Cart button */
+    column-gap: 56px;
     width: fit-content;
     padding-right: 8px;
   }
