@@ -1,0 +1,127 @@
+.section {
+  overflow: clip;
+  padding: 88px var(--gutter);
+  scroll-margin-top: var(--nav-offset);
+}
+
+.inner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 48px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
+
+/* Big faint Poké Ball behind the section */
+.backdrop {
+  position: absolute;
+  right: -180px;
+  top: -40px;
+  width: 560px;
+  height: 560px;
+  color: var(--foil);
+  opacity: 0.6;
+}
+
+.intro {
+  position: relative;
+  flex: 1 1 380px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pill {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--tint-red);
+  color: var(--red-dark);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(34px, 4.4vw, 44px);
+  line-height: 1.05;
+}
+
+.text {
+  color: var(--text-soft);
+  font-size: 18px;
+}
+
+.sets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.setLink {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 0 var(--ink);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.setLink:hover {
+  color: var(--ink);
+  transform: translateY(-3px) rotate(-1deg);
+  box-shadow: 0 6px 0 var(--ink);
+}
+
+.features {
+  position: relative;
+  flex: 1 1 440px;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border: var(--outline);
+  border-radius: 22px;
+  background: var(--white);
+  box-shadow: var(--sticker-shadow);
+}
+
+.featureBall {
+  width: 48px;
+  height: 48px;
+}
+
+.featureTitle {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 21px;
+}
+
+.featureText {
+  color: var(--text-soft);
+  font-size: 15px;
+}
