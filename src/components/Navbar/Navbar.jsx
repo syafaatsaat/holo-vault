@@ -4,7 +4,6 @@ import { useCart } from '../../cart/useCart.js'
 import { useScrolled } from '../../hooks/useScrolled.js'
 import { useSnugProgress } from '../../hooks/useSnugProgress.js'
 import PackLogo from '../art/PackLogo.jsx'
-import NavDebug from './NavDebug.jsx'
 import styles from './Navbar.module.css'
 
 // Blends into the red band at the top of every page, then shrinks into a
@@ -12,7 +11,7 @@ import styles from './Navbar.module.css'
 // links move into a menu opened by the burger button beside Cart.
 export default function Navbar() {
   const { itemCount } = useCart()
-  const { pathname, search } = useLocation()
+  const { pathname } = useLocation()
   const compact = useScrolled()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuId = useId()
@@ -24,8 +23,6 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false)
   // drives the phone layout's shrink (see the end of Navbar.module.css)
   useSnugProgress(headerRef, compact)
-  // TEMPORARY: see NavDebug.jsx
-  const navDebug = new URLSearchParams(search).has('navdebug')
 
   // While the menu is open: Escape closes it (focus back on the burger), and a
   // tap or click anywhere outside the navbar closes it.
@@ -112,7 +109,6 @@ export default function Navbar() {
           )}
         </NavLink>
       </nav>
-      {navDebug && <NavDebug headerRef={headerRef} compact={compact} />}
     </header>
   )
 }
