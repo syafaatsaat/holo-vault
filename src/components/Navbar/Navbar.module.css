@@ -390,3 +390,86 @@
     transform: none;
   }
 }
+
+/* Phones, where the browser can tie an animation to the scroll position: the
+   snug state follows the page over its first 64px of scrolling instead of
+   playing a timed animation when a threshold is crossed. iOS Safari's own
+   toolbar collapses and returns at those same moments, and the page resize it
+   causes could stall a timed animation so it skipped ahead; a scroll-linked one
+   simply sits wherever the scroll is. Other browsers keep the timed version. */
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .logo,
+    .cart,
+    .logoArt,
+    .nav::before {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 64px;
+    }
+
+    .logo,
+    .logoArt,
+    .nav::before {
+      transition: none;
+    }
+
+    /* keeps the press effect */
+    .cart {
+      transition: transform 0.18s ease;
+    }
+
+    .logo {
+      animation-name: snug-logo;
+    }
+
+    .cart {
+      animation-name: snug-cart;
+    }
+
+    .logoArt {
+      animation-name: snug-logo-art;
+    }
+
+    .nav::before {
+      animation-name: snug-glass;
+    }
+  }
+}
+
+@keyframes snug-logo {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: var(--snug-shift) 0;
+  }
+}
+
+@keyframes snug-cart {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: calc(-1 * var(--snug-shift)) 0;
+  }
+}
+
+@keyframes snug-logo-art {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 0.77;
+  }
+}
+
+@keyframes snug-glass {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
