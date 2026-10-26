@@ -69,3 +69,9 @@ export function filterCards({ set = ALL_SETS, query = '', sort = DEFAULT_SORT } 
 export function getTopCards(count, cards = CARDS) {
   return [...cards].sort(comparators['price-desc']).slice(0, count)
 }
+
+// TCGplayer serves each card image at several sizes; the catalogue stores the
+// 400px one. The 800px one (about 573×800) is real extra detail for close-ups.
+export function getLargeImage(card) {
+  return card.image.replace('/fit-in/400x400/', '/fit-in/800x800/')
+}

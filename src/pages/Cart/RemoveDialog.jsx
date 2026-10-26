@@ -1,41 +1,20 @@
-import { useEffect, useId, useRef } from 'react'
+import { useId, useRef } from 'react'
+import { useModalDialog } from '../../hooks/useModalDialog.js'
 import { getSetName } from '../../lib/cards.js'
 import styles from './Cart.module.css'
 
-// Asks before a card leaves the cart. A modal <dialog>, so the page behind is
-// dimmed and can't be clicked or tabbed to. "Keep it" has focus first, so a
-// stray Enter never removes anything; Escape or a click on the dimmed page
-// also keeps the card.
+// Asks before a card leaves the cart. "Keep it" has focus first, so a stray
+// Enter never removes anything; Escape or a click on the dimmed page also keeps
+// the card.
 export default function RemoveDialog({ line, onConfirm, onCancel }) {
-  const dialogRef = useRef(null)
   const keepRef = useRef(null)
+  const dialogProps = useModalDialog(onCancel, keepRef)
   const titleId = useId()
   const textId = useId()
   const { card, quantity } = line
 
-  useEffect(() => {
-    dialogRef.current.showModal()
-    keepRef.current.focus()
-  }, [])
-
-  // The parent closes the dialog by unmounting it, so stop the browser closing
-  // it on its own (Escape) and report a cancel instead
-  function handleCancel(event) {
-    event.preventDefault()
-    onCancel()
-  }
-
   return (
-    <dialog
-      ref={dialogRef}
-      className={styles.dialog}
-      aria-labelledby={titleId}
-      aria-describedby={textId}
-      onCancel={handleCancel}
-      onKeyDown={(event) => event.key === 'Escape' && handleCancel(event)}
-      // A click on the dimmed backdrop lands on the <dialog> itself
-      onClick={(event) => event.target === event.currentTarget && onCancel()}
-    >
+    <dialog {...dialogProps} className={styles.dialog} aria-labelledby={titleId} aria-describedby={textId}>
       <div className={styles.dialogBody}>
         <img className={styles.dialogImage} src={card.image} alt="" width="287" height="400" />
         <h2 id={titleId} className={styles.dialogTitle}>

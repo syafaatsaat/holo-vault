@@ -17,6 +17,38 @@
   box-shadow: var(--sticker-shadow-lifted);
 }
 
+/* The picture, with the magnify button over its top-right corner */
+.imageWrap {
+  position: relative;
+}
+
+.magnify {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: var(--outline);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  cursor: zoom-in;
+  /* see-through so the card art shows; solid while pointed at or focused */
+  opacity: 0.6;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.magnify:hover,
+.magnify:focus-visible {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
 .image {
   width: 100%;
   height: auto;
@@ -72,4 +104,95 @@
 
 .added {
   background: var(--blue);
+}
+
+/* Close-up: the card large over the dimmed page, with its name below */
+.zoom {
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+}
+
+.zoom[open] {
+  animation: zoomIn 0.22s ease-out;
+}
+
+.zoom::backdrop {
+  background: rgb(29 33 64 / 0.72);
+  backdrop-filter: blur(4px);
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+.zoomBody {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.zoomImage {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(100vw - 32px);
+  /* leaves room for the caption on short screens */
+  max-height: calc(100dvh - 150px);
+  aspect-ratio: 573 / 800;
+  border-radius: 4.5% / 3.2%;
+  /* the small image shows, stretched, until the sharp one arrives */
+  background-size: cover;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+}
+
+.zoomCaption {
+  padding: 8px 20px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--ink);
+  text-align: center;
+}
+
+.zoomTitle {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.zoomMeta {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.zoomClose {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: var(--outline);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--ink);
+}
+
+.zoomClose:hover {
+  background: var(--yellow);
 }

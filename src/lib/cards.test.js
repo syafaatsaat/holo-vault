@@ -8,6 +8,7 @@ import {
   countCardsInSet,
   filterCards,
   getCardById,
+  getLargeImage,
   getSetName,
   getTopCards,
   isKnownSet,
@@ -151,5 +152,12 @@ describe('getTopCards', () => {
     const [top] = getTopCards(1)
     expect(top.name).toBe('Umbreon ex')
     expect(top.rarity).toBe('Special Illustration Rare')
+  })
+})
+
+describe('getLargeImage', () => {
+  it('points at the 800px version of the card image', () => {
+    const card = { image: 'https://product-images.tcgplayer.com/fit-in/400x400/502554.jpg' }
+    expect(getLargeImage(card)).toBe('https://product-images.tcgplayer.com/fit-in/800x800/502554.jpg')
   })
 })

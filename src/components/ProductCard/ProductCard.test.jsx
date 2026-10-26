@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { umbreon } from '../../cart/testCards.js'
@@ -59,5 +59,30 @@ describe('ProductCard', () => {
     act(() => vi.advanceTimersByTime(1300))
     expect(addButton()).toHaveTextContent('Add to cart')
     expect(screen.getByRole('status')).toBeEmptyDOMElement()
+  })
+
+  it('opens a close-up of the card from the magnify button', async () => {
+    const user = userEvent.setup()
+    render(<ProductCard card={umbreon} onAddToCart={() => {}} />)
+    await user.click(screen.getByRole('button', { name: 'View Umbreon ex close up' }))
+    const dialog = screen.getByRole('dialog', { name: 'Umbreon ex' })
+    const image = within(dialog).getByRole('img', { name: 'Umbreon ex, Prismatic Evolutions Special Illustration Rare' })
+    expect(image).toHaveAttribute('src', umbreon.image.replace('/fit-in/400x400/', '/fit-in/800x800/'))
+    expect(within(dialog).getByText('Prismatic Evolutions · 161/131')).toBeInTheDocument()
+    expect(within(dialog).getByRole('button', { name: 'Close' })).toHaveFocus()
+  })
+
+  it.each([
+    ['the close button', (user) => user.click(screen.getByRole('button', { name: 'Close' }))],
+    ['Escape', (user) => user.keyboard('{Escape}')],
+    ['a click on the dimmed page', (user) => user.click(screen.getByRole('dialog'))],
+  ])('closes the close-up with %s and returns focus to the magnify button', async (_, close) => {
+    const user = userEvent.setup()
+    render(<ProductCard card={umbreon} onAddToCart={() => {}} />)
+    const magnify = screen.getByRole('button', { name: 'View Umbreon ex close up' })
+    await user.click(magnify)
+    await close(user)
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(magnify).toHaveFocus()
   })
 })
