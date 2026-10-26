@@ -1,0 +1,35 @@
+/* Covers the window without catching clicks. Above the page sections, below the
+   navbar, so the trail never draws over the bar. */
+.trail {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ball {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  /* centred on the cursor; kept apart from the animated transform */
+  translate: -50% -50%;
+  animation: pop 750ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+/* Pops in, then drifts down, spins and shrinks away */
+@keyframes pop {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  20% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(18px) rotate(var(--spin)) scale(0.35);
+    opacity: 0;
+  }
+}
