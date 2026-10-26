@@ -11,8 +11,8 @@
 
 .ball {
   position: absolute;
-  width: 64px;
-  height: 64px;
+  width: 192px;
+  height: 192px;
   /* centred on the cursor; kept apart from the animated transform */
   translate: -50% -50%;
   animation: pop 1s ease-out forwards;
