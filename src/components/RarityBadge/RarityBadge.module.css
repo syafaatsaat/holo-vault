@@ -37,22 +37,14 @@
   background: var(--tint-yellow);
 }
 
-.short {
-  display: none;
-}
-
+/* Phones: smaller, so long names like Special Illustration Rare fit the
+   two-a-row Shop cards; any that still don't wrap onto a second line */
 @media (max-width: 600px) {
-  /* visually hidden, still read out */
-  .shortable .full {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .shortable .short {
-    display: inline;
+  .badge {
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    letter-spacing: 0;
+    line-height: 1.25;
   }
 }

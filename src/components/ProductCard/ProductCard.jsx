@@ -75,7 +75,7 @@ export default function ProductCard({ card, onAddToCart }) {
         </button>
       </div>
       <div className={styles.details}>
-        <RarityBadge rarity={card.rarity} shortOnPhones />
+        <RarityBadge rarity={card.rarity} />
         <h2 className={styles.name}>{card.name}</h2>
         <p className={styles.meta}>
           {setName} · {card.number}
