@@ -15,6 +15,12 @@ function startWith(items) {
   return renderRoute('/cart')
 }
 
+// Press a card's Remove button and confirm in the dialog
+async function removeCard(user, name) {
+  await user.click(screen.getByRole('button', { name: `Remove ${name} from cart` }))
+  await user.click(within(screen.getByRole('dialog', { name: `Remove ${name}?` })).getByRole('button', { name: 'Remove' }))
+}
+
 describe('empty cart', () => {
   it('says the pack is empty and links to the shop', () => {
     renderRoute('/cart')
@@ -80,7 +86,7 @@ describe('cart with items', () => {
       { id: umbreon.id, quantity: 1 },
       { id: pikachu.id, quantity: 2 },
     ])
-    await user.click(screen.getByRole('button', { name: 'Remove Umbreon ex from cart' }))
+    await removeCard(user, 'Umbreon ex')
     expect(rowFor('Umbreon ex')).toBeUndefined()
     expect(rows()).toHaveLength(1)
     expect(screen.getByRole('status')).toHaveTextContent('Removed Umbreon ex from your cart.')
@@ -94,14 +100,14 @@ describe('cart with items', () => {
       { id: umbreon.id, quantity: 1 },
       { id: pikachu.id, quantity: 1 },
     ])
-    await user.click(screen.getByRole('button', { name: 'Remove Pikachu ex from cart' }))
+    await removeCard(user, 'Pikachu ex')
     expect(screen.getByRole('button', { name: 'Remove Umbreon ex from cart' })).toHaveFocus()
   })
 
   it('shows the empty state, and focuses its link, after removing the last card', async () => {
     const user = userEvent.setup()
     startWith([{ id: umbreon.id, quantity: 1 }])
-    await user.click(screen.getByRole('button', { name: 'Remove Umbreon ex from cart' }))
+    await removeCard(user, 'Umbreon ex')
     expect(screen.getByRole('heading', { name: 'Your pack is empty' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Go to the shop' })).toHaveFocus()
     expect(navCart()).toHaveAccessibleName('Cart, 0 items')
@@ -133,5 +139,49 @@ describe('saved cart', () => {
     renderRoute('/cart')
     expect(rows()).toHaveLength(1)
     expect(screen.getByText('1 card in your cart')).toBeInTheDocument()
+  })
+})
+
+describe('confirming a removal', () => {
+  const removeButton = (name) => screen.getByRole('button', { name: `Remove ${name} from cart` })
+
+  it('asks before removing, with the card focused on "Keep it"', async () => {
+    const user = userEvent.setup()
+    startWith([{ id: pikachu.id, quantity: 2 }])
+    await user.click(removeButton('Pikachu ex'))
+    const dialog = screen.getByRole('dialog', { name: 'Remove Pikachu ex?' })
+    expect(dialog).toHaveAccessibleDescription('This takes all 2 copies out of your cart.')
+    expect(within(dialog).getByRole('button', { name: 'Keep it' })).toHaveFocus()
+    expect(rowFor('Pikachu ex')).toBeDefined()
+  })
+
+  it('keeps the card and returns focus to its Remove button on "Keep it"', async () => {
+    const user = userEvent.setup()
+    startWith([{ id: umbreon.id, quantity: 1 }])
+    await user.click(removeButton('Umbreon ex'))
+    await user.click(screen.getByRole('button', { name: 'Keep it' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(rowFor('Umbreon ex')).toBeDefined()
+    expect(removeButton('Umbreon ex')).toHaveFocus()
+    expect(navCart()).toHaveAccessibleName('Cart, 1 item')
+  })
+
+  it('keeps the card on Escape', async () => {
+    const user = userEvent.setup()
+    startWith([{ id: umbreon.id, quantity: 1 }])
+    await user.click(removeButton('Umbreon ex'))
+    await user.keyboard('{Escape}')
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(rowFor('Umbreon ex')).toBeDefined()
+    expect(removeButton('Umbreon ex')).toHaveFocus()
+  })
+
+  it('keeps the card when the dimmed page around the dialog is clicked', async () => {
+    const user = userEvent.setup()
+    startWith([{ id: umbreon.id, quantity: 1 }])
+    await user.click(removeButton('Umbreon ex'))
+    await user.click(screen.getByRole('dialog'))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(rowFor('Umbreon ex')).toBeDefined()
   })
 })

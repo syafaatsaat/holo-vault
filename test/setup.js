@@ -70,3 +70,15 @@ afterEach(() => {
   localStorage.clear()
   MockIntersectionObserver.instances = []
 })
+
+// jsdom has <dialog> but not its modal methods. showModal/close just toggle
+// `open`; Escape and focus handling are left to the components and the browser.
+if (typeof HTMLDialogElement.prototype.showModal !== 'function') {
+  HTMLDialogElement.prototype.showModal = function showModal() {
+    this.open = true
+  }
+  HTMLDialogElement.prototype.close = function close() {
+    this.open = false
+    this.dispatchEvent(new Event('close'))
+  }
+}

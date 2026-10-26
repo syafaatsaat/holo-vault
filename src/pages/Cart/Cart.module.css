@@ -261,6 +261,106 @@
 }
 
 /* On narrow screens the summary sits under the list and doesn't need to stick */
+/* Remove confirmation: a sticker panel over the dimmed page */
+.dialog {
+  width: min(calc(100vw - 32px), 400px);
+  max-width: none;
+  padding: 0;
+  border: var(--outline);
+  border-radius: 28px;
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 8px 0 var(--ink);
+  overflow: visible;
+}
+
+.dialog[open] {
+  animation: dialogPop 0.2s ease-out;
+}
+
+.dialog::backdrop {
+  background: rgb(29 33 64 / 0.5);
+  backdrop-filter: blur(3px);
+}
+
+@keyframes dialogPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+}
+
+.dialogBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 24px 24px;
+  text-align: center;
+}
+
+/* The card being removed, tilted like a sticker */
+.dialogImage {
+  width: 96px;
+  height: auto;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  transform: rotate(-4deg);
+}
+
+.dialogTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.15;
+}
+
+.dialogText {
+  color: var(--text-soft);
+}
+
+.dialogActions {
+  align-self: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.keepButton,
+.confirmButton {
+  flex: 1 1 130px;
+  height: 50px;
+  padding: 0 22px;
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--ink);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.keepButton:hover,
+.confirmButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--ink);
+}
+
+.keepButton {
+  background: var(--white);
+  color: var(--ink);
+}
+
+.confirmButton {
+  background: var(--red);
+  color: var(--white);
+}
+
 @media (max-width: 960px) {
   .summary {
     position: static;

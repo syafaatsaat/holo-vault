@@ -4,29 +4,40 @@ import PageBand from '../../components/PageBand/PageBand.jsx'
 import CartRow from './CartRow.jsx'
 import CartSummary from './CartSummary.jsx'
 import EmptyCart from './EmptyCart.jsx'
+import RemoveDialog from './RemoveDialog.jsx'
 import styles from './Cart.module.css'
 
 export default function Cart() {
   const { lines, itemCount, subtotal, setQuantity, removeFromCart } = useCart()
   const [announcement, setAnnouncement] = useState('')
-  // After a removal the focused Remove button disappears; move focus to a
-  // neighbouring row's Remove button (or the empty-cart link) once the list updates.
-  const focusAfterRemove = useRef(null)
+  // The card whose Remove button was pressed, waiting for the dialog's answer
+  const [confirmingId, setConfirmingId] = useState(null)
+  const confirmingIndex = lines.findIndex((line) => line.card.id === confirmingId)
+  // Where focus goes once the dialog has closed: back to the same Remove button
+  // if the card was kept; after a removal that button is gone, so a neighbouring
+  // row's Remove button (or the empty-cart link).
+  const focusNext = useRef(null)
   const removeButtons = useRef(new Map())
   const shopLink = useRef(null)
 
   useEffect(() => {
-    const pending = focusAfterRemove.current
-    if (pending === null) return
-    focusAfterRemove.current = null
+    const pending = focusNext.current
+    if (pending === null || confirmingId !== null) return
+    focusNext.current = null
     const target = pending === 'shop' ? shopLink.current : removeButtons.current.get(pending)
     target?.focus()
-  }, [lines])
+  }, [lines, confirmingId])
 
-  function handleRemove(index) {
-    const { card } = lines[index]
-    const neighbour = lines[index + 1] ?? lines[index - 1]
-    focusAfterRemove.current = neighbour ? neighbour.card.id : 'shop'
+  function keepCard() {
+    focusNext.current = confirmingId
+    setConfirmingId(null)
+  }
+
+  function removeCard() {
+    const { card } = lines[confirmingIndex]
+    const neighbour = lines[confirmingIndex + 1] ?? lines[confirmingIndex - 1]
+    focusNext.current = neighbour ? neighbour.card.id : 'shop'
+    setConfirmingId(null)
     removeFromCart(card.id)
     setAnnouncement(`Removed ${card.name} from your cart.`)
   }
@@ -45,12 +56,12 @@ export default function Cart() {
         ) : (
           <div className={styles.layout}>
             <ul className={styles.list} aria-label="Cart items">
-              {lines.map((line, index) => (
+              {lines.map((line) => (
                 <CartRow
                   key={line.card.id}
                   line={line}
                   onQuantityChange={(quantity) => setQuantity(line.card.id, quantity)}
-                  onRemove={() => handleRemove(index)}
+                  onRemove={() => setConfirmingId(line.card.id)}
                   removeButtonRef={(button) => {
                     if (button) removeButtons.current.set(line.card.id, button)
                     else removeButtons.current.delete(line.card.id)
@@ -60,6 +71,9 @@ export default function Cart() {
             </ul>
             <CartSummary itemCount={itemCount} subtotal={subtotal} />
           </div>
+        )}
+        {confirmingIndex >= 0 && (
+          <RemoveDialog line={lines[confirmingIndex]} onConfirm={removeCard} onCancel={keepCard} />
         )}
         <p role="status" className="visually-hidden">
           {announcement}
