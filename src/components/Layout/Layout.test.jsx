@@ -25,6 +25,12 @@ describe('pages', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument()
   })
 
+  it('shows the Rustboro City map with the shop on it in Visit Us', () => {
+    renderRoute('/cart')
+    const visit = within(screen.getByRole('region', { name: 'See the cards in person' }))
+    expect(visit.getByRole('img', { name: /Map of Rustboro City: Holo Vault is on Granite Way/ })).toBeInTheDocument()
+  })
+
   it('shows a not-found page with a way back for an unknown address', () => {
     renderRoute('/pokedex')
     expect(screen.getByRole('heading', { level: 1, name: 'This page got away.' })).toBeInTheDocument()

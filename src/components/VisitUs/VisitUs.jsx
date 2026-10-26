@@ -1,3 +1,4 @@
+import TownMap from '../art/TownMap.jsx'
 import styles from './VisitUs.module.css'
 
 // A Poké Ball-shaped panel: red top, dark band with a centre button, white bottom.
@@ -44,10 +45,8 @@ export default function VisitUs() {
               </dd>
             </div>
           </dl>
-          <div className={styles.map} role="img" aria-label="Map of Rustboro City (artwork coming soon)">
-            Map placeholder
-            <br />
-            (Rustboro City town map art)
+          <div className={styles.map}>
+            <TownMap />
           </div>
         </div>
       </div>

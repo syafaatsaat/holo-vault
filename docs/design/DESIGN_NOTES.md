@@ -75,7 +75,7 @@ The file is `mockups/OptionC-Stickers.dc.html`, with parts taken from Options A 
    - The whole card is tilted, alternating left and right. There's no tape.
    - Cards are `position: sticky` with a slightly lower top offset each, so they stack as you scroll.
 6. **About:** Option A's version (intro, set buttons, four Poké Ball feature boxes, a big faint Poké Ball outline) on the dotted background.
-7. **Visit Us:** Option A's Poké Ball panel (red top, band with a map-pin button, white bottom with the details and a map placeholder) on the dotted background.
+7. **Visit Us:** Option A's Poké Ball panel (red top, band with a map-pin button, white bottom with the details and an illustrated Rustboro City map: Granite Way with Holo Vault pinned on it, the Gym, Pokémon Center and Poké Mart, and the roads to Routes 104 and 116; original sticker-style SVG, not the in-game map) on the dotted background.
 8. **Footer**
    - Option B's red footer.
    - Topped by a crimped pack edge with the teeth pointing up, the same as the hero seal.
@@ -96,7 +96,7 @@ These come from the earlier clickable mockup, `mockups/Main.dc.html`.
 
 ### Still open / next steps
 - Review the Option C Shop and Cart mockup (`mockups/C-ShopCart.dc.html`).
-- Choose art for the placeholders: welcome wallpaper, map, final logo.
+- Choose art for the placeholders: welcome wallpaper, final logo.
 - Fix the card-name clean-up in the data snapshot.
 - Build the real app: React Router, Vitest + React Testing Library, `vercel.json`, CSS Modules.
 

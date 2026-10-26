@@ -1,0 +1,27 @@
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 15px;
+  fill: var(--ink);
+}
+
+.street {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  fill: var(--text-muted);
+}
+
+.compass {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 11px;
+  fill: var(--ink);
+}
