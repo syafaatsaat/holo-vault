@@ -108,6 +108,84 @@
   background: var(--blue);
 }
 
+/* Phones, two cards a row: smaller text and padding, same 44px tap targets */
+@media (max-width: 600px) {
+  .card {
+    gap: 8px;
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .image {
+    border-width: 2px;
+    border-radius: 8px;
+  }
+
+  .magnify {
+    top: 0;
+    right: 0;
+  }
+
+  .magnify svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .name {
+    margin-top: 4px;
+    font-size: 17px;
+  }
+
+  .meta {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 21px;
+  }
+
+  .add {
+    height: 44px;
+    border-width: 2px;
+    font-size: 15px;
+  }
+
+  /* the quantity box, squeezed: smaller − and + (still easy to tap) leave
+     room for a two-digit number */
+  .stepper {
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .stepper button,
+  .stepper input {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stepper input {
+    width: 100%;
+    font-size: 17px;
+  }
+}
+
+/* The narrowest phones: "Added ✓" fits on one line where "Added to cart ✓" doesn't */
+@media (max-width: 380px) {
+  .card {
+    padding: 8px;
+  }
+
+  /* hidden from view only, so screen readers still hear "Added to cart" */
+  .addedExtra {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
 /* Close-up: the card large over the dimmed page, with its name below */
 .zoom {
   max-width: none;

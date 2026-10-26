@@ -243,6 +243,15 @@
   min-width: 0;
 }
 
+/* Phones: two cards a row, so you see about four at a time instead of one.
+   The magnify button is there for a closer look. */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 12px;
+  }
+}
+
 .more {
   display: flex;
   flex-direction: column;

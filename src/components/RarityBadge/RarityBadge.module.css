@@ -36,3 +36,23 @@
 .aceSpec {
   background: var(--tint-yellow);
 }
+
+.short {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  /* visually hidden, still read out */
+  .shortable .full {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .shortable .short {
+    display: inline;
+  }
+}

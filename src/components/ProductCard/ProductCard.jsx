@@ -75,16 +75,22 @@ export default function ProductCard({ card, onAddToCart }) {
         </button>
       </div>
       <div className={styles.details}>
-        <RarityBadge rarity={card.rarity} />
+        <RarityBadge rarity={card.rarity} shortOnPhones />
         <h2 className={styles.name}>{card.name}</h2>
         <p className={styles.meta}>
           {setName} · {card.number}
         </p>
       </div>
       <p className={styles.price}>{formatPrice(card.price)}</p>
-      <QuantityStepper quantity={quantity} onQuantityChange={setQuantity} itemName={card.name} />
+      <QuantityStepper className={styles.stepper} quantity={quantity} onQuantityChange={setQuantity} itemName={card.name} />
       <button type="button" className={`${styles.add} ${added ? styles.added : ''}`} onClick={handleAdd}>
-        {added ? 'Added to cart ✓' : 'Add to cart'}
+        {added ? (
+          <>
+            Added <span className={styles.addedExtra}>to cart</span> ✓
+          </>
+        ) : (
+          'Add to cart'
+        )}
       </button>
       <p role="status" className="visually-hidden">
         {added ? `Added ${added.quantity} × ${card.name} to your cart` : ''}
