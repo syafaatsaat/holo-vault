@@ -8,7 +8,7 @@
   /* centred on the cursor; kept apart from the animated transform */
   translate: -50% -50%;
   pointer-events: none;
-  animation: pop 450ms ease-out forwards;
+  animation: pop 1s ease-out forwards;
   will-change: transform, opacity;
 }
 
@@ -18,7 +18,7 @@
     transform: scale(0);
     opacity: 1;
   }
-  20% {
+  10% {
     transform: scale(1.1);
     opacity: 1;
   }

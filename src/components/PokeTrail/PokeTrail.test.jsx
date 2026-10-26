@@ -87,10 +87,10 @@ describe('PokeTrail', () => {
     expect(balls()).toHaveLength(0)
   })
 
-  it('keeps at most 20 balls on screen', () => {
+  it('keeps at most 40 balls on screen', () => {
     const { getByTestId, balls } = renderPage()
-    for (let i = 0; i < 30; i++) move(getByTestId('dots'), i * 60, 100)
-    expect(balls()).toHaveLength(20)
+    for (let i = 0; i < 50; i++) move(getByTestId('dots'), i * 40, 100)
+    expect(balls()).toHaveLength(40)
   })
 
   it('is turned off for users who prefer reduced motion', () => {
