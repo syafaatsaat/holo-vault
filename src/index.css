@@ -103,12 +103,10 @@ p {
   margin: 0;
 }
 
-/* White page background with the faint dot grid used behind the content sections.
-   Positioned and isolated so the Poké Ball trail can sit between the dots and the
-   content (see PokeTrail). Sections that set their own position keep it. */
-.dotted {
-  position: relative;
-  isolation: isolate;
+/* The faint dot grid on white, drawn once behind the whole page by the Layout so
+   it runs on without seams. Sections that show it stay see-through, and the
+   `dotted` class marks them as where the Poké Ball trail appears (PokeTrail). */
+.dot-grid {
   background-color: var(--white);
   background-image: radial-gradient(var(--foil) 2px, transparent 2.1px);
   background-size: 26px 26px;

@@ -1,13 +1,20 @@
-/* Sits inside a `.dotted` section, which is its own stacking context, so z-index
-   -1 paints it over the section's dots but under all of its content */
+/* Covers the window without catching clicks. The Layout wrapper is its own
+   stacking context, so z-index -1 paints the trail over the wrapper's dot grid
+   but under everything on the page. */
+.trail {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .ball {
   position: absolute;
-  z-index: -1;
   width: 64px;
   height: 64px;
   /* centred on the cursor; kept apart from the animated transform */
   translate: -50% -50%;
-  pointer-events: none;
   animation: pop 1s ease-out forwards;
   will-change: transform, opacity;
 }

@@ -8,7 +8,7 @@ import styles from './Layout.module.css'
 
 export default function Layout() {
   return (
-    <div className={styles.app}>
+    <div className={`dot-grid ${styles.app}`}>
       <ScrollManager />
       <a className={styles.skipLink} href="#main">
         Skip to content

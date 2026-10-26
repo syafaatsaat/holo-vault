@@ -23,7 +23,7 @@ function renderPage() {
       <PokeTrail />
     </>,
   )
-  return { ...result, balls: () => result.container.querySelectorAll('span[aria-hidden="true"]') }
+  return { ...result, balls: () => result.container.querySelectorAll('[aria-hidden="true"] > span') }
 }
 
 function move(target, x, y, pointerType = 'mouse') {
@@ -35,11 +35,10 @@ function move(target, x, y, pointerType = 'mouse') {
 }
 
 describe('PokeTrail', () => {
-  it('drops a ball inside the dotted section, where the mouse is', () => {
+  it('drops a ball where the mouse moves over the dotted background', () => {
     const { getByTestId, balls } = renderPage()
     move(getByTestId('dots'), 100, 120)
     expect(balls()).toHaveLength(1)
-    expect(balls()[0].parentElement).toBe(getByTestId('dots'))
     expect(balls()[0]).toHaveStyle({ left: '100px', top: '120px' })
   })
 
@@ -49,7 +48,6 @@ describe('PokeTrail', () => {
     move(getByTestId('card-text'), 200, 100)
     move(getByRole('button'), 300, 100)
     expect(balls()).toHaveLength(3)
-    balls().forEach((ball) => expect(ball.parentElement).toBe(getByTestId('dots')))
   })
 
   it('spaces the balls out instead of dropping one on every tiny movement', () => {

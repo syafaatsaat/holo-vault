@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
 import PokeBall from '../art/PokeBall.jsx'
 import styles from './PokeTrail.module.css'
 
@@ -14,11 +13,11 @@ function prefersReducedMotion() {
 }
 
 // A trail of Poké Balls that follows the mouse across the dotted background.
-// Each ball is placed inside the `.dotted` section under the cursor, layered just
-// above its dots and behind everything else in it, so the trail slips under
-// cards, text and buttons. Each ball pops in, spins and fades, then removes
-// itself. Touch and pen input don't leave a trail, and neither does anything for
-// users who prefer reduced motion.
+// The balls share one layer just above the page's dot grid and behind everything
+// else, so the trail slips under cards, text and buttons and crosses from one
+// section to the next without being cut off. Each ball pops in, spins and fades,
+// then removes itself. Touch and pen input don't leave a trail, and neither does
+// anything for users who prefer reduced motion.
 export default function PokeTrail() {
   const [balls, setBalls] = useState([])
 
@@ -28,8 +27,7 @@ export default function PokeTrail() {
     let last = null
     let nextId = 0
     const onMove = (event) => {
-      const host = event.pointerType === 'mouse' && event.target.closest?.('.dotted')
-      if (!host) {
+      if (event.pointerType !== 'mouse' || !event.target.closest?.('.dotted')) {
         last = null
         return
       }
@@ -38,17 +36,8 @@ export default function PokeTrail() {
       if (last && Math.hypot(x - last.x, y - last.y) < SPACING) return
       last = { x, y }
 
-      // Position within the section, which may itself be moving (Top cards drops in)
-      const box = host.getBoundingClientRect()
       const id = nextId++
-      const ball = {
-        id,
-        host,
-        x: x - box.left,
-        y: y - box.top,
-        top: TOPS[id % TOPS.length],
-        spin: Math.round(Math.random() * 240 - 120),
-      }
+      const ball = { id, x, y, top: TOPS[id % TOPS.length], spin: Math.round(Math.random() * 240 - 120) }
       setBalls((current) => [...current.slice(1 - MAX_BALLS), ball])
     }
 
@@ -58,21 +47,18 @@ export default function PokeTrail() {
 
   const remove = (id) => setBalls((current) => current.filter((ball) => ball.id !== id))
 
-  // A section that unmounted (after navigating away) takes its balls with it
-  return balls
-    .filter((ball) => ball.host.isConnected)
-    .map((ball) =>
-      createPortal(
+  return (
+    <div className={styles.trail} aria-hidden="true">
+      {balls.map((ball) => (
         <span
-          aria-hidden="true"
+          key={ball.id}
           className={styles.ball}
           style={{ left: ball.x, top: ball.y, '--spin': `${ball.spin}deg` }}
           onAnimationEnd={() => remove(ball.id)}
         >
           <PokeBall top={ball.top} />
-        </span>,
-        ball.host,
-        ball.id,
-      ),
-    )
+        </span>
+      ))}
+    </div>
+  )
 }
