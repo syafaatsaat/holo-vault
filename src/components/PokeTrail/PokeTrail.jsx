@@ -15,9 +15,9 @@ function prefersReducedMotion() {
 // A trail of Poké Balls that follows the mouse across the dotted background.
 // The balls share one layer just above the page's dot grid and behind everything
 // else, so the trail slips under cards, text and buttons and crosses from one
-// section to the next without being cut off. Each ball pops in, spins and fades,
-// then removes itself. Touch and pen input don't leave a trail, and neither does
-// anything for users who prefer reduced motion.
+// section to the next without being cut off. Each ball pops in, then spins and
+// fades at full size before removing itself. Touch and pen input don't leave a
+// trail, and neither does anything for users who prefer reduced motion.
 export default function PokeTrail() {
   const [balls, setBalls] = useState([])
 
