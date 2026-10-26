@@ -97,11 +97,15 @@
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 3px 0 var(--ink);
-  transition: background-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
+/* Turns red on hover, as a warning; the bin icon follows the text colour */
 .remove:hover {
-  background: var(--tint-yellow);
+  background: var(--red);
+  color: var(--white);
 }
 
 /* Summary: a small Poké Ball panel that stays in view on wide screens */
