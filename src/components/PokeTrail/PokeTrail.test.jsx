@@ -8,7 +8,7 @@ afterEach(() => {
   window.matchMedia = originalMatchMedia
 })
 
-// A dotted section with a bare heading on it and a white card on top of it
+// A dotted section with a heading and a white card on it, and a footer without dots
 function renderPage() {
   const result = render(
     <>
@@ -23,7 +23,7 @@ function renderPage() {
       <PokeTrail />
     </>,
   )
-  return { ...result, balls: () => result.container.querySelectorAll('[aria-hidden="true"] > span') }
+  return { ...result, balls: () => result.container.querySelectorAll('span[aria-hidden="true"]') }
 }
 
 function move(target, x, y, pointerType = 'mouse') {
@@ -35,17 +35,21 @@ function move(target, x, y, pointerType = 'mouse') {
 }
 
 describe('PokeTrail', () => {
-  it('drops a ball where the mouse moves over the dotted background', () => {
+  it('drops a ball inside the dotted section, where the mouse is', () => {
     const { getByTestId, balls } = renderPage()
     move(getByTestId('dots'), 100, 120)
     expect(balls()).toHaveLength(1)
+    expect(balls()[0].parentElement).toBe(getByTestId('dots'))
     expect(balls()[0]).toHaveStyle({ left: '100px', top: '120px' })
   })
 
-  it('counts bare content on the dots, like a heading, as background', () => {
-    const { getByTestId, balls } = renderPage()
-    move(getByTestId('heading'), 100, 120)
-    expect(balls()).toHaveLength(1)
+  it('keeps the trail going under content on the dots, like headings and cards', () => {
+    const { getByTestId, getByRole, balls } = renderPage()
+    move(getByTestId('heading'), 100, 100)
+    move(getByTestId('card-text'), 200, 100)
+    move(getByRole('button'), 300, 100)
+    expect(balls()).toHaveLength(3)
+    balls().forEach((ball) => expect(ball.parentElement).toBe(getByTestId('dots')))
   })
 
   it('spaces the balls out instead of dropping one on every tiny movement', () => {
@@ -58,11 +62,9 @@ describe('PokeTrail', () => {
     expect(balls()).toHaveLength(2)
   })
 
-  it('leaves no trail over cards, buttons or areas without dots', () => {
-    const { getByTestId, getByRole, balls } = renderPage()
-    move(getByTestId('card-text'), 100, 100)
-    move(getByRole('button'), 200, 100)
-    move(getByTestId('footer'), 300, 100)
+  it('leaves no trail outside the dotted background', () => {
+    const { getByTestId, balls } = renderPage()
+    move(getByTestId('footer'), 100, 100)
     expect(balls()).toHaveLength(0)
   })
 
@@ -87,7 +89,7 @@ describe('PokeTrail', () => {
 
   it('keeps at most 20 balls on screen', () => {
     const { getByTestId, balls } = renderPage()
-    for (let i = 0; i < 30; i++) move(getByTestId('dots'), i * 50, 100)
+    for (let i = 0; i < 30; i++) move(getByTestId('dots'), i * 60, 100)
     expect(balls()).toHaveLength(20)
   })
 
