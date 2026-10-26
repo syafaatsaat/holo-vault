@@ -21,7 +21,29 @@ describe('useScrolled', () => {
     const { result } = renderHook(() => useScrolled(40))
     act(() => scrollPageTo(41))
     expect(result.current).toBe(true)
-    act(() => scrollPageTo(10))
+    act(() => scrollPageTo(0))
+    expect(result.current).toBe(false)
+  })
+
+  it('stays put between the reset point and the threshold, so it never flickers', () => {
+    const { result } = renderHook(() => useScrolled(40, 8))
+    act(() => scrollPageTo(30))
+    expect(result.current).toBe(false)
+    act(() => scrollPageTo(41))
+    expect(result.current).toBe(true)
+    act(() => scrollPageTo(30))
+    expect(result.current).toBe(true)
+    act(() => scrollPageTo(41))
+    act(() => scrollPageTo(9))
+    expect(result.current).toBe(true)
+    act(() => scrollPageTo(8))
+    expect(result.current).toBe(false)
+  })
+
+  it('treats the bounce above the top (a negative scroll) as the top', () => {
+    const { result } = renderHook(() => useScrolled())
+    act(() => scrollPageTo(200))
+    act(() => scrollPageTo(-30))
     expect(result.current).toBe(false)
   })
 
