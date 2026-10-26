@@ -220,7 +220,10 @@
 /* Phones: one row with the burger in the middle. At the top of the page the
    logo, burger and Cart spread across the bar; once scrolled, they snug
    together in the centred glass bar. The page links sit in a drop-down sticker
-   panel centred under the bar. */
+   panel centred under the bar.
+   The bar keeps the same three columns in both states and shrinks to a fixed
+   width, which every browser can animate (iPhone browsers can't animate to
+   fit-content), so the logo and Cart glide in with its edges. */
 @media (max-width: 640px) {
   .nav {
     position: relative;
@@ -228,19 +231,22 @@
     column-gap: 12px;
   }
 
+  /* Three 48px items, two 12px gaps, 14px padding and the 2px border each side */
   .compact .nav {
-    grid-template-columns: auto auto auto;
+    width: 200px;
+  }
+
+  /* The logo gets the same 48px box as the burger and Cart, so the snug bar is
+     evenly spaced */
+  .logo {
+    display: flex;
     justify-content: center;
-    width: fit-content;
+    width: 48px;
   }
 
   .burger {
     grid-column: 2;
     display: flex;
-  }
-
-  .compact .cart {
-    justify-self: start;
   }
 
   /* Icon-only Cart: a round button like the burger. The word stays in the
