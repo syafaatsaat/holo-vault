@@ -2,6 +2,8 @@
 
 A shop for Pokémon TCG singles, priced at market value. Holo Vault is a fictional card shop in Rustboro City, built as a React shopping app for [The Odin Project](https://www.theodinproject.com/)'s shopping cart project.
 
+**Live site: https://holo-vault-two.vercel.app/**
+
 > Fan project. Not affiliated with Nintendo, Creatures, GAME FREAK or The Pokémon Company.
 
 ## Features
@@ -70,7 +72,7 @@ The design decisions are written up in [`docs/design/DESIGN_NOTES.md`](docs/desi
 
 ## Deploying
 
-The site is a single-page app hosted on [Vercel](https://vercel.com/). `vercel.json` sends every address to `index.html`, so React Router can handle links like `/shop` or `/cart` when they're opened directly or refreshed. Vercel detects Vite on its own, so no other settings are needed.
+The site is a single-page app hosted on [Vercel](https://vercel.com/), which redeploys it on every push to `main`. `vercel.json` sends every address to `index.html`, so React Router can handle links like `/shop` or `/cart` when they're opened directly or refreshed. Vercel detects Vite on its own, so no other settings are needed.
 
 ## Credits
 

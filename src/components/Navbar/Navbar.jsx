@@ -82,21 +82,22 @@ export default function Navbar() {
             </Link>
           </li>
         </ul>
-        {/* Named "Cart, 3 items" from its own text (no aria-label), so the name
-            starts with the visible word "Cart" for voice-control users */}
+        {/* Named "Cart, 3 items" by one aria-label: separate text pieces made some
+            browsers read "Cart , 3 items". It still starts with the visible word
+            "Cart", so voice-control users can say "click Cart". */}
         <NavLink
           to="/cart"
           onClick={closeMenu}
           className={({ isActive }) => `${styles.cart} ${isActive ? styles.cartCurrent : ''}`}
+          aria-label={`Cart, ${itemText}`}
         >
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <circle cx="9" cy="20" r="1.5" />
             <circle cx="18" cy="20" r="1.5" />
             <path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21.5 7H6" />
           </svg>
-          {/* Hidden visually on phones (icon only), but still read out */}
+          {/* Hidden on phones, where the button is just the icon */}
           <span className={styles.cartLabel}>Cart</span>
-          <span className="visually-hidden">, {itemText}</span>
           {itemCount > 0 && (
             <span className={styles.badge} aria-hidden="true">
               {itemCount}
