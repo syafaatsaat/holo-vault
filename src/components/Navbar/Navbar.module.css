@@ -244,11 +244,12 @@
 @media (max-width: 640px) {
   /* On phones the bar never changes size or layout. The logo, burger and Cart
      keep their spread-out places, and the snug state is made only with moves,
-     scaling and a fade, which iOS Safari animates on the graphics chip. (Width,
-     padding and size changes need a layout per frame on the main thread, which
-     is busy with the scroll, so Safari played them in jumps.) */
+     scaling and a fade, which iOS Safari draws without redoing the layout.
+     (Width, padding and size changes need a layout per frame, so Safari played
+     them in jumps.) All of it follows --snug, which useSnugProgress eases from
+     0 (full size) to 1 (snug) frame by frame instead of a CSS transition, so a
+     moment's stall in Safari can't make the animation skip ahead. */
   .header {
-    --snug-ease: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     /* How far the logo and Cart travel to sit 60px either side of the burger */
     --snug-shift: calc(50vw - 86px - var(--gutter));
   }
@@ -276,21 +277,11 @@
   }
 
   .logo {
-    transition: translate var(--snug-ease);
-  }
-
-  .compact .logo {
-    translate: var(--snug-shift) 0;
+    translate: calc(var(--snug, 0) * var(--snug-shift)) 0;
   }
 
   .cart {
-    transition:
-      transform 0.18s ease,
-      translate var(--snug-ease);
-  }
-
-  .compact .cart {
-    translate: calc(-1 * var(--snug-shift)) 0;
+    translate: calc(var(--snug, 0) * -1 * var(--snug-shift)) 0;
   }
 
   /* 44×55 shrinking to about 34×42, by scaling rather than resizing */
@@ -298,16 +289,13 @@
   .compact .logoArt {
     width: 44px;
     height: 55px;
-    transition: scale var(--snug-ease);
-  }
-
-  .compact .logoArt {
-    scale: 0.77;
+    scale: calc(1 - 0.23 * var(--snug, 0));
   }
 
   /* The glass pill: always the snug size, centred on the buttons, and only ever
      fades. Three 48px buttons, two 12px gaps and 14px padding each side. */
-  .nav::before {
+  .nav::before,
+  .compact .nav::before {
     top: 50%;
     right: auto;
     bottom: auto;
@@ -315,7 +303,8 @@
     width: 200px;
     height: 62px;
     translate: -50% -50%;
-    transition: opacity var(--snug-ease);
+    opacity: var(--snug, 0);
+    transition: none;
   }
 
   /* The logo gets the same 48px box as the burger and Cart, so the snug bar is
@@ -391,85 +380,3 @@
   }
 }
 
-/* Phones, where the browser can tie an animation to the scroll position: the
-   snug state follows the page over its first 64px of scrolling instead of
-   playing a timed animation when a threshold is crossed. iOS Safari's own
-   toolbar collapses and returns at those same moments, and the page resize it
-   causes could stall a timed animation so it skipped ahead; a scroll-linked one
-   simply sits wherever the scroll is. Other browsers keep the timed version. */
-@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: scroll()) {
-    .logo,
-    .cart,
-    .logoArt,
-    .nav::before {
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: scroll(root);
-      animation-range: 0 64px;
-    }
-
-    .logo,
-    .logoArt,
-    .nav::before {
-      transition: none;
-    }
-
-    /* keeps the press effect */
-    .cart {
-      transition: transform 0.18s ease;
-    }
-
-    .logo {
-      animation-name: snug-logo;
-    }
-
-    .cart {
-      animation-name: snug-cart;
-    }
-
-    .logoArt {
-      animation-name: snug-logo-art;
-    }
-
-    .nav::before {
-      animation-name: snug-glass;
-    }
-  }
-}
-
-@keyframes snug-logo {
-  from {
-    translate: 0 0;
-  }
-  to {
-    translate: var(--snug-shift) 0;
-  }
-}
-
-@keyframes snug-cart {
-  from {
-    translate: 0 0;
-  }
-  to {
-    translate: calc(-1 * var(--snug-shift)) 0;
-  }
-}
-
-@keyframes snug-logo-art {
-  from {
-    scale: 1;
-  }
-  to {
-    scale: 0.77;
-  }
-}
-
-@keyframes snug-glass {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}

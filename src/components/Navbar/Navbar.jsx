@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { useCart } from '../../cart/useCart.js'
 import { useScrolled } from '../../hooks/useScrolled.js'
+import { useSnugProgress } from '../../hooks/useSnugProgress.js'
 import PackLogo from '../art/PackLogo.jsx'
 import styles from './Navbar.module.css'
 
@@ -16,9 +17,12 @@ export default function Navbar() {
   const menuId = useId()
   const navRef = useRef(null)
   const burgerRef = useRef(null)
+  const headerRef = useRef(null)
   const itemText = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`
   const linkClass = ({ isActive }) => `${styles.link} ${isActive ? styles.current : ''}`
   const closeMenu = () => setMenuOpen(false)
+  // drives the phone layout's shrink (see the end of Navbar.module.css)
+  useSnugProgress(headerRef, compact)
 
   // While the menu is open: Escape closes it (focus back on the burger), and a
   // tap or click anywhere outside the navbar closes it.
@@ -42,7 +46,7 @@ export default function Navbar() {
   }, [menuOpen])
 
   return (
-    <header className={`${styles.header} ${compact ? styles.compact : ''}`}>
+    <header ref={headerRef} className={`${styles.header} ${compact ? styles.compact : ''}`}>
       <nav ref={navRef} aria-label="Main" className={`${styles.nav} ${menuOpen ? styles.menuOpen : ''}`}>
         <Link to="/" className={styles.logo} aria-label="Holo Vault home" onClick={closeMenu}>
           <PackLogo className={styles.logoArt} />
