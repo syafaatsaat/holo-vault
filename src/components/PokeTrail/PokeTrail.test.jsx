@@ -56,7 +56,7 @@ describe('PokeTrail', () => {
     move(dots, 100, 100)
     move(dots, 110, 105)
     expect(balls()).toHaveLength(1)
-    move(dots, 160, 100)
+    move(dots, 200, 100)
     expect(balls()).toHaveLength(2)
   })
 
@@ -87,7 +87,7 @@ describe('PokeTrail', () => {
 
   it('keeps at most 40 balls on screen', () => {
     const { getByTestId, balls } = renderPage()
-    for (let i = 0; i < 50; i++) move(getByTestId('dots'), i * 40, 100)
+    for (let i = 0; i < 50; i++) move(getByTestId('dots'), i * 100, 100)
     expect(balls()).toHaveLength(40)
   })
 

@@ -3,7 +3,7 @@ import PokeBall from '../art/PokeBall.jsx'
 import styles from './PokeTrail.module.css'
 
 // Distance the mouse travels between balls, and how many can be on screen at once
-const SPACING = 32
+const SPACING = 96
 const MAX_BALLS = 40
 // Mostly red tops, with the brand's yellow and blue mixed in
 const TOPS = ['var(--red)', 'var(--yellow)', 'var(--red)', 'var(--blue)']
