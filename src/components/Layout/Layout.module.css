@@ -1,5 +1,5 @@
 /* Short pages still fill the window, so the footer never floats mid-screen.
-   Isolated so the Poké Ball trail's layer sits just above the dot grid and
+   Isolated so the card trail's layer sits just above the dot grid and
    behind everything else on the page. */
 .app {
   isolation: isolate;

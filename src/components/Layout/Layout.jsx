@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router'
+import CardTrail from '../CardTrail/CardTrail.jsx'
 import Footer from '../Footer/Footer.jsx'
 import Navbar from '../Navbar/Navbar.jsx'
-import PokeTrail from '../PokeTrail/PokeTrail.jsx'
 import ScrollManager from '../ScrollManager.jsx'
 import VisitUs from '../VisitUs/VisitUs.jsx'
 import styles from './Layout.module.css'
@@ -19,7 +19,7 @@ export default function Layout() {
       </main>
       <VisitUs />
       <Footer />
-      <PokeTrail />
+      <CardTrail />
     </div>
   )
 }

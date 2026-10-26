@@ -285,7 +285,7 @@
   font-family: var(--font-heading);
   font-weight: 600;
   white-space: nowrap;
-  transform: rotate(-5deg);
+  transform: rotate(5deg);
 }
 
 @media (max-width: 640px) {

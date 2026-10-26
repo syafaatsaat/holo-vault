@@ -9,17 +9,19 @@
   pointer-events: none;
 }
 
-.ball {
+.card {
   position: absolute;
-  width: 192px;
+  width: auto;
+  max-width: none;
   height: 192px;
+  border-radius: 9px;
   /* centred on the cursor; kept apart from the animated transform */
   translate: -50% -50%;
   animation: pop 1s ease-out forwards;
   will-change: transform, opacity;
 }
 
-/* Pops in, then drifts down and spins as it fades, staying full size */
+/* Pops in, then drifts down and tilts as it fades, staying full size */
 @keyframes pop {
   0% {
     transform: scale(0);
@@ -30,7 +32,7 @@
     opacity: 1;
   }
   100% {
-    transform: translateY(24px) rotate(var(--spin));
+    transform: translateY(24px) rotate(var(--tilt));
     opacity: 0;
   }
 }
