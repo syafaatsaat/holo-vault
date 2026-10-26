@@ -242,35 +242,80 @@
    width, which every browser can animate (iPhone browsers can't animate to
    fit-content), so the logo and Cart glide in with its edges. */
 @media (max-width: 640px) {
-  /* A slower, softer shrink and grow than on wide screens, where the bar changes
-     less: eased at both ends, and every part on the same timing so nothing
-     finishes early. */
-  .header,
-  .nav,
-  .nav::before,
-  .logoArt {
-    transition-duration: 0.5s;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  /* On phones the bar never changes size or layout. The logo, burger and Cart
+     keep their spread-out places, and the snug state is made only with moves,
+     scaling and a fade, which iOS Safari animates on the graphics chip. (Width,
+     padding and size changes need a layout per frame on the main thread, which
+     is busy with the scroll, so Safari played them in jumps.) */
+  .header {
+    --snug-ease: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    /* How far the logo and Cart travel to sit 60px either side of the burger */
+    --snug-shift: calc(50vw - 86px - var(--gutter));
   }
 
-  .nav {
+  .compact {
+    padding: 0;
+  }
+
+  .nav,
+  .compact .nav {
     grid-template-columns: 1fr auto 1fr;
     column-gap: 12px;
+    width: 100%;
+    max-width: none;
+    padding: 14px var(--gutter);
+    /* the bar spans the screen, so only its buttons (and the menu) take taps */
+    pointer-events: none;
   }
 
-  /* The glass is only seen on the snug bar, so it stays that size, centred, and
-     just fades in as the logo and Cart glide into it. A blurred layer that
-     never resizes is cheap for phones to animate. */
+  .logo,
+  .burger,
+  .cart,
+  .links {
+    pointer-events: auto;
+  }
+
+  .logo {
+    transition: translate var(--snug-ease);
+  }
+
+  .compact .logo {
+    translate: var(--snug-shift) 0;
+  }
+
+  .cart {
+    transition:
+      transform 0.18s ease,
+      translate var(--snug-ease);
+  }
+
+  .compact .cart {
+    translate: calc(-1 * var(--snug-shift)) 0;
+  }
+
+  /* 44×55 shrinking to about 34×42, by scaling rather than resizing */
+  .logoArt,
+  .compact .logoArt {
+    width: 44px;
+    height: 55px;
+    transition: scale var(--snug-ease);
+  }
+
+  .compact .logoArt {
+    scale: 0.77;
+  }
+
+  /* The glass pill: always the snug size, centred on the buttons, and only ever
+     fades. Three 48px buttons, two 12px gaps and 14px padding each side. */
   .nav::before {
+    top: 50%;
     right: auto;
+    bottom: auto;
     left: 50%;
     width: 200px;
-    translate: -50% 0;
-  }
-
-  /* Three 48px items, two 12px gaps, 14px padding and the 2px border each side */
-  .compact .nav {
-    width: 200px;
+    height: 62px;
+    translate: -50% -50%;
+    transition: opacity var(--snug-ease);
   }
 
   /* The logo gets the same 48px box as the burger and Cart, so the snug bar is
@@ -307,7 +352,8 @@
     /* out of the grid, so it's placed against the whole bar, not a column */
     grid-column: auto;
     position: absolute;
-    top: calc(100% + 10px);
+    /* 10px under the buttons (and under the glass pill, which is 62px tall) */
+    top: calc(50% + 41px);
     left: 50%;
     width: min(calc(100vw - 32px), 340px);
     transform: translateX(-50%);
