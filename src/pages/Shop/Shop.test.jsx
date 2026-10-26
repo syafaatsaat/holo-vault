@@ -2,13 +2,17 @@ import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { renderRoute } from '../../../test/renderRoute.jsx'
-import { CARDS, filterCards } from '../../lib/cards.js'
+import { CARDS, filterCards, SORT_OPTIONS } from '../../lib/cards.js'
 
 const cardList = () => screen.getByRole('list', { name: 'Cards' })
 const shownCards = () => within(cardList()).getAllByRole('article')
 const shownNames = () => within(cardList()).getAllByRole('heading').map((heading) => heading.textContent)
 const searchBox = () => screen.getByRole('searchbox', { name: 'Search cards by name' })
 const sortSelect = () => screen.getByRole('combobox', { name: 'Sort cards' })
+async function chooseSort(user, name) {
+  await user.click(sortSelect())
+  await user.click(screen.getByRole('option', { name }))
+}
 const setButton = (name) => within(screen.getByRole('group', { name: 'Filter by set' })).getByRole('button', { name })
 const showMore = () => screen.queryByRole('button', { name: /^Show \d+ more/ })
 const search = (router) => router.state.location.search
@@ -43,7 +47,7 @@ describe('Shop page', () => {
     renderRoute('/shop')
     await user.click(showMore())
     expect(shownCards()).toHaveLength(48)
-    await user.selectOptions(sortSelect(), 'Name: A to Z')
+    await chooseSort(user, 'Name: A to Z')
     expect(shownCards()).toHaveLength(24)
   })
 })
@@ -127,13 +131,13 @@ describe('set filters', () => {
 describe('sorting', () => {
   it('sorts by price high to low by default', () => {
     renderRoute('/shop')
-    expect(sortSelect()).toHaveValue('price-desc')
+    expect(sortSelect()).toHaveTextContent('Price: high to low')
   })
 
   it('sorts by price low to high', async () => {
     const user = userEvent.setup()
     const { router } = renderRoute('/shop')
-    await user.selectOptions(sortSelect(), 'Price: low to high')
+    await chooseSort(user, 'Price: low to high')
     expect(shownNames()[0]).toBe(filterCards({ sort: 'price-asc' })[0].name)
     expect(search(router)).toBe('?sort=price-asc')
   })
@@ -141,9 +145,47 @@ describe('sorting', () => {
   it('sorts by name', async () => {
     const user = userEvent.setup()
     renderRoute('/shop')
-    await user.selectOptions(sortSelect(), 'Name: A to Z')
+    await chooseSort(user, 'Name: A to Z')
     const names = shownNames()
     expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)))
+  })
+
+  it('opens a list of the sorts with the current one selected', async () => {
+    const user = userEvent.setup()
+    renderRoute('/shop')
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    await user.click(sortSelect())
+    expect(sortSelect()).toHaveAttribute('aria-expanded', 'true')
+    const options = within(screen.getByRole('listbox', { name: 'Sort cards' })).getAllByRole('option')
+    expect(options.map((option) => option.textContent)).toEqual(SORT_OPTIONS.map((option) => option.label))
+    expect(screen.getByRole('option', { name: 'Price: high to low' })).toHaveAttribute('aria-selected', 'true')
+    expect(sortSelect()).toHaveFocus()
+  })
+
+  it('can be used from the keyboard', async () => {
+    const user = userEvent.setup()
+    const { router } = renderRoute('/shop')
+    sortSelect().focus()
+    await user.keyboard('{ArrowDown}')
+    expect(screen.getByRole('listbox')).toBeInTheDocument()
+    await user.keyboard('{ArrowDown}{ArrowDown}')
+    expect(sortSelect()).toHaveAttribute('aria-activedescendant', screen.getByRole('option', { name: 'Name: A to Z' }).id)
+    await user.keyboard('{Enter}')
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    expect(sortSelect()).toHaveTextContent('Name: A to Z')
+    expect(search(router)).toBe('?sort=name-asc')
+  })
+
+  it('closes without changing the sort on Escape or a click elsewhere', async () => {
+    const user = userEvent.setup()
+    renderRoute('/shop')
+    sortSelect().focus()
+    await user.keyboard('{ArrowDown}{ArrowDown}{Escape}')
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    await user.click(sortSelect())
+    await user.click(searchBox())
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    expect(sortSelect()).toHaveTextContent('Price: high to low')
   })
 })
 
@@ -152,7 +194,7 @@ describe('filters from the URL', () => {
     renderRoute('/shop?q=charizard&set=151&sort=price-asc')
     expect(searchBox()).toHaveValue('charizard')
     expect(setButton('151')).toHaveAttribute('aria-pressed', 'true')
-    expect(sortSelect()).toHaveValue('price-asc')
+    expect(sortSelect()).toHaveTextContent('Price: low to high')
     const expected = filterCards({ query: 'charizard', set: '151', sort: 'price-asc' })
     expect(shownCards()).toHaveLength(expected.length)
   })
@@ -160,7 +202,7 @@ describe('filters from the URL', () => {
   it('ignores an unknown set or sort in the URL', () => {
     renderRoute('/shop?set=base-set&sort=rarity')
     expect(setButton('All sets')).toHaveAttribute('aria-pressed', 'true')
-    expect(sortSelect()).toHaveValue('price-desc')
+    expect(sortSelect()).toHaveTextContent('Price: high to low')
     expect(screen.getByText(`${CARDS.length} cards`)).toBeInTheDocument()
   })
 })

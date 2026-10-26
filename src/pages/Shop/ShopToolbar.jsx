@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { ALL_SETS, CARDS, SETS, SORT_OPTIONS, getSetName } from '../../lib/cards.js'
 import styles from './Shop.module.css'
+import SortMenu from './SortMenu.jsx'
 
 const SET_FILTERS = [{ slug: ALL_SETS, name: 'All sets' }, ...SETS]
 
@@ -53,21 +54,7 @@ export default function ShopToolbar({ filters, resultCount }) {
             </button>
           )}
         </div>
-        <div className={styles.sort}>
-          <label htmlFor="card-sort" className="visually-hidden">
-            Sort cards
-          </label>
-          <select id="card-sort" className={styles.sortSelect} value={sort} onChange={(event) => setSort(event.target.value)}>
-            {SORT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <svg className={styles.sortIcon} viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </div>
+        <SortMenu label="Sort cards" options={SORT_OPTIONS} value={sort} onChange={setSort} />
       </div>
 
       <div className={styles.filterRow}>

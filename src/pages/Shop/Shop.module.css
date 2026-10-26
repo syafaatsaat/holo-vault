@@ -30,7 +30,7 @@
   top: 50%;
   color: var(--ink);
   pointer-events: none;
-  transform: translateY(-60%);
+  transform: translateY(-50%);
 }
 
 .searchIcon {
@@ -50,6 +50,7 @@
 }
 
 .searchInput {
+  display: block;
   width: 100%;
   padding: 0 60px 0 54px;
 }
@@ -85,7 +86,7 @@
   background: var(--white);
   color: var(--ink);
   cursor: pointer;
-  transform: translateY(-60%);
+  transform: translateY(-50%);
 }
 
 .clear:hover {
@@ -94,19 +95,87 @@
 
 .sort {
   position: relative;
+  /* the open list sits above the product cards */
+  z-index: 5;
   flex: 0 0 auto;
 }
 
 .sortSelect {
-  appearance: none;
+  display: flex;
+  align-items: center;
   padding: 0 52px 0 22px;
   font-size: 16px;
   font-weight: 800;
+  white-space: nowrap;
   cursor: pointer;
+  user-select: none;
 }
 
 .sortIcon {
   right: 20px;
+  transition: transform 0.2s ease;
+}
+
+.sortOpen .sortIcon {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* The open list: a sticker panel under the box, lined up with its right edge */
+.sortList {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 100%;
+  margin: 0;
+  padding: 8px;
+  border: var(--outline);
+  border-radius: 22px;
+  background: var(--white);
+  box-shadow: var(--sticker-shadow);
+  list-style: none;
+  transform-origin: top right;
+  animation: sortPop 0.16s ease-out;
+}
+
+.sortList[hidden] {
+  display: none;
+}
+
+@keyframes sortPop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+}
+
+.sortOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  color: var(--ink);
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* The option under the mouse or the arrow keys */
+.sortOptionActive {
+  background: var(--tint-yellow);
+}
+
+/* The chosen sort: a yellow sticker with a tick */
+.sortOption[aria-selected='true'] {
+  background: var(--yellow);
+}
+
+.sortOption[aria-selected='true']::after {
+  content: '✓';
 }
 
 .filterRow {
