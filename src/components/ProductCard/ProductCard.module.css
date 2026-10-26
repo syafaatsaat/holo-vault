@@ -29,11 +29,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* just the icon, in a 44px tap target */
   width: 44px;
   height: 44px;
-  border: var(--outline);
+  padding: 0;
+  border: none;
   border-radius: 50%;
-  background: var(--white);
+  background: none;
   color: var(--ink);
   cursor: zoom-in;
   /* see-through so the card art shows; solid while pointed at or focused */
@@ -46,7 +48,7 @@
 .magnify:hover,
 .magnify:focus-visible {
   opacity: 1;
-  transform: scale(1.06);
+  transform: scale(1.12);
 }
 
 .image {

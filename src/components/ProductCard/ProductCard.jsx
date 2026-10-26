@@ -61,9 +61,16 @@ export default function ProductCard({ card, onAddToCart }) {
           onClick={() => setZoomed(true)}
           aria-label={`View ${card.name} close up`}
         >
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true">
-            <circle cx="10.5" cy="10.5" r="6.5" />
-            <path d="M20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" />
+          {/* A white edge under the dark lines keeps the icon visible on any card art */}
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" strokeLinecap="round" aria-hidden="true">
+            <g stroke="var(--white)" strokeWidth="5.4">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="M20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" />
+            </g>
+            <g stroke="currentColor" strokeWidth="2.6">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="M20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" />
+            </g>
           </svg>
         </button>
       </div>
